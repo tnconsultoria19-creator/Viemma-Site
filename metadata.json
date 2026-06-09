@@ -1,0 +1,6 @@
+{
+  "name": "Viemma Tours",
+  "description": "Luxury African & Island Travel across Southern Africa and the Indian Ocean.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

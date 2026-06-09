@@ -1,0 +1,122 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@300;400;500;600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Montserrat", sans-serif;
+  --font-serif: "Playfair Display", serif;
+  
+  --color-brand-dark: #1A3326;
+  --color-brand-light: #FCFAF8;
+  --color-brand-accent: #D4AF37;
+  
+  --shadow-elegant: 0 10px 40px -10px rgba(0, 0, 0, 0.08);
+  --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    color: #1A3326;
+    background-color: #FCFAF8;
+    overflow-x: hidden;
+}
+
+.century-gothic {
+    font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif !important;
+}
+
+.hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.nav-link { 
+    position: relative; 
+    cursor: pointer; 
+    transition: color 0.3s ease; 
+}
+.nav-link::after {
+    content: ''; 
+    position: absolute; 
+    width: 0; 
+    height: 1px;
+    bottom: -4px; 
+    left: 50%; 
+    background-color: #D4AF37;
+    transition: all 0.4s ease; 
+    transform: translateX(-50%);
+}
+.nav-link:hover::after { 
+    width: 100%; 
+}
+
+.country-badge {
+    display: inline-block; 
+    padding: 5px 12px; 
+    border-radius: 2px; 
+    font-size: 9px;
+    font-weight: 500; 
+    text-transform: uppercase; 
+    letter-spacing: 0.15em;
+    color: white; 
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+
+.btn-outline {
+    border: 1px solid rgba(255,255,255,0.6); 
+    color: white; 
+    background: transparent;
+    backdrop-filter: blur(4px); 
+    transition: all 0.4s ease;
+    width: max-content; 
+}
+.btn-outline:hover { 
+    background: white; 
+    color: #1A3326; 
+    border-color: white; 
+}
+
+.text-shadow-strong {
+    text-shadow: 0px 2px 4px rgba(0,0,0,0.8), 0px 4px 20px rgba(0,0,0,0.8);
+}
+.text-shadow-subtle {
+    text-shadow: 0px 1px 3px rgba(0,0,0,0.8);
+}
+
+/* Embossed Styling */
+.embossed-card {
+    background-color: #FCFAF8;
+    border-radius: 8px;
+    padding: 8px;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.15), -2px -2px 6px rgba(255, 255, 255, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+.embossed-card:hover {
+    box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.1), inset -2px -2px 5px rgba(255, 255, 255, 1);
+}
+.embossed-card img {
+    filter: grayscale(100%) opacity(0.7);
+    mix-blend-mode: multiply;
+    transition: all 0.3s ease;
+}
+.embossed-card:hover img {
+    filter: grayscale(0%) opacity(1);
+}
+
+/* Footer Inverted Embossed */
+.footer-embossed-img {
+    filter: grayscale(100%) invert(1) opacity(0.6);
+    mix-blend-mode: screen;
+    transition: all 0.3s ease;
+}
+.footer-embossed-img:hover {
+    filter: grayscale(0%) invert(0) opacity(1);
+    mix-blend-mode: normal;
+}
+
