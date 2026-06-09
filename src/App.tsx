@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { 
   allTourPackages, 
   destinationsData, 
@@ -17,9 +17,30 @@ import {
 import { TourPackage } from "./types";
 
 export default function App() {
+  const tanzaniteScrollRef = useRef<HTMLDivElement>(null);
+  const artScrollRef = useRef<HTMLDivElement>(null);
+  const romanceScrollRef = useRef<HTMLDivElement>(null);
+  const corporateScrollRef = useRef<HTMLDivElement>(null);
+  const southAfricaScrollRef = useRef<HTMLDivElement>(null);
+  const victoriaFallsScrollRef = useRef<HTMLDivElement>(null);
+  const mauritiusScrollRef = useRef<HTMLDivElement>(null);
+  const zanzibarScrollRef = useRef<HTMLDivElement>(null);
+  const otherDestScrollRef = useRef<HTMLDivElement>(null);
+
+  const scrollContainer = (ref: React.RefObject<HTMLDivElement | null>, direction: "left" | "right") => {
+    if (ref && ref.current) {
+      const scrollAmount = ref.current.clientWidth * 0.75;
+      ref.current.scrollBy({
+        left: direction === "left" ? -scrollAmount : scrollAmount,
+        behavior: "smooth"
+      });
+    }
+  };
+
   const [currentView, setCurrentView] = useState<string>("home");
   const [selectedDestId, setSelectedDestId] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
+  const [mobileDestOpen, setMobileDestOpen] = useState<boolean>(false);
   const [cart, setCart] = useState<{ [title: string]: { qty: number; img: string; price?: string } }>({});
   const [cartOpen, setCartOpen] = useState<boolean>(false);
   const [bookingModalOpen, setBookingModalOpen] = useState<boolean>(false);
@@ -315,26 +336,63 @@ export default function App() {
         </button>
       )}
 
-      {/* Mobile Menu Overlay */}
-      <div className={`fixed inset-y-0 right-0 w-[75vw] sm:w-[50vw] bg-brand-light border-l border-[#ecece8] z-[70] transform transition-transform duration-500 flex flex-col justify-center items-center space-y-7 text-lg font-serif text-brand-dark shadow-none ${mobileMenuOpen ? "translate-x-0" : "translate-x-full"}`} id="mobile-menu-overlay">
-        <button 
-          onClick={() => setMobileMenuOpen(false)} 
-          className="absolute top-8 right-8 text-2xl text-brand-dark hover:text-brand-accent transition-colors focus:outline-none"
-          id="close-mobile-menu"
-        >
-          <i className="fas fa-times"></i>
-        </button>
-        <a onClick={() => switchView("home")} className="hover:text-brand-accent cursor-pointer transition-colors font-light">Home</a>
-        <a onClick={() => switchView("tours")} className="hover:text-brand-accent cursor-pointer transition-colors font-light">Tours</a>
-        <a onClick={() => switchView("corporate")} className="hover:text-brand-accent cursor-pointer transition-colors font-light">Business Tours</a>
-        <a onClick={() => switchView("romance")} className="hover:text-brand-accent cursor-pointer transition-colors font-light">Bespoke Romance</a>
-        <a onClick={() => switchView("about")} className="hover:text-brand-accent cursor-pointer transition-colors font-light">Our Story</a>
-        <a onClick={() => switchView("store")} className="hover:text-brand-accent cursor-pointer transition-colors font-light">The Boutique</a>
-        <a onClick={() => { setContactModalOpen(true); setMobileMenuOpen(false); }} className="hover:text-brand-accent cursor-pointer transition-colors font-light">Contact</a>
+      {/* Mobile Menu Overlay - Top slide down, scrollable, covers reasonable height */}
+      <div 
+        className={`fixed top-0 left-0 right-0 max-h-[85vh] overflow-y-auto bg-brand-light border-b border-[#ecece8] z-[70] transform transition-transform duration-500 flex flex-col pt-6 pb-8 px-6 text-base font-serif text-brand-dark shadow-elegant rounded-b-md ${mobileMenuOpen ? "translate-y-0" : "-translate-y-full"}`} 
+        id="mobile-menu-overlay"
+      >
+        <div className="w-full flex justify-between items-center mb-5">
+          <span className="text-[10px] uppercase tracking-widest text-[#8c7a5b] font-sans font-semibold">Menu</span>
+          <button 
+            onClick={() => setMobileMenuOpen(false)} 
+            className="text-xl text-brand-dark hover:text-brand-accent transition-colors focus:outline-none cursor-pointer"
+            id="close-mobile-menu"
+          >
+            <i className="fas fa-times text-stone-600"></i>
+          </button>
+        </div>
+
+        <div className="w-full flex flex-col space-y-3.5 text-sm tracking-wide">
+          <a onClick={() => { switchView("home"); setMobileMenuOpen(false); }} className="hover:text-brand-accent cursor-pointer transition-colors font-light py-1 border-b border-[#ecece8]/30">Home</a>
+          
+          {/* Collapsible Destinations menu */}
+          <div className="border-b border-[#ecece8]/30 py-1">
+            <button 
+              onClick={() => setMobileDestOpen(!mobileDestOpen)} 
+              className="w-full flex justify-between items-center hover:text-brand-accent cursor-pointer transition-colors font-light text-left"
+            >
+              <span>Destinations</span>
+              <i className={`fas fa-chevron-down text-[10px] transition-transform duration-300 ${mobileDestOpen ? "rotate-180 text-brand-accent" : ""}`}></i>
+            </button>
+            
+            {/* Expanded items */}
+            {mobileDestOpen && (
+              <div className="pl-3 mt-2.5 mb-2 grid grid-cols-2 gap-x-4 gap-y-2.5 text-xs text-stone-600 font-sans tracking-wider animate-fade-in border-l-2 border-[#8c7a5b]/20">
+                <a onClick={() => { switchView("destination", "south-africa"); setMobileMenuOpen(false); }} className="hover:text-brand-accent cursor-pointer py-1 block"><i className="fas fa-angle-right mr-1.5 text-[#8c7a5b]"></i>South Africa</a>
+                <a onClick={() => { switchView("destination", "victoria-falls"); setMobileMenuOpen(false); }} className="hover:text-brand-accent cursor-pointer py-1 block"><i className="fas fa-angle-right mr-1.5 text-[#8c7a5b]"></i>Victoria Falls</a>
+                <a onClick={() => { switchView("destination", "mauritius"); setMobileMenuOpen(false); }} className="hover:text-brand-accent cursor-pointer py-1 block"><i className="fas fa-angle-right mr-1.5 text-[#8c7a5b]"></i>Mauritius</a>
+                <a onClick={() => { switchView("destination", "reunion"); setMobileMenuOpen(false); }} className="hover:text-brand-accent cursor-pointer py-1 block"><i className="fas fa-angle-right mr-1.5 text-[#8c7a5b]"></i>Reunion Islands</a>
+                <a onClick={() => { switchView("destination", "maldives"); setMobileMenuOpen(false); }} className="hover:text-brand-accent cursor-pointer py-1 block"><i className="fas fa-angle-right mr-1.5 text-[#8c7a5b]"></i>Maldives</a>
+                <a onClick={() => { switchView("destination", "seychelles"); setMobileMenuOpen(false); }} className="hover:text-brand-accent cursor-pointer py-1 block"><i className="fas fa-angle-right mr-1.5 text-[#8c7a5b]"></i>Seychelles</a>
+                <a onClick={() => { switchView("destination", "zanzibar"); setMobileMenuOpen(false); }} className="hover:text-brand-accent cursor-pointer py-1 block"><i className="fas fa-angle-right mr-1.5 text-[#8c7a5b]"></i>Zanzibar</a>
+                <a onClick={() => { switchView("destination", "mozambique"); setMobileMenuOpen(false); }} className="hover:text-brand-accent cursor-pointer py-1 block"><i className="fas fa-angle-right mr-1.5 text-[#8c7a5b]"></i>Mozambique</a>
+                <a onClick={() => { switchView("destination", "madagascar"); setMobileMenuOpen(false); }} className="hover:text-brand-accent cursor-pointer py-1 block"><i className="fas fa-angle-right mr-1.5 text-[#8c7a5b]"></i>Madagascar</a>
+              </div>
+            )}
+          </div>
+
+          <a onClick={() => { switchView("tours"); setMobileMenuOpen(false); }} className="hover:text-brand-accent cursor-pointer transition-colors font-light py-1 border-b border-[#ecece8]/30">Tours</a>
+          <a onClick={() => { switchView("corporate"); setMobileMenuOpen(false); }} className="hover:text-brand-accent cursor-pointer transition-colors font-light py-1 border-b border-[#ecece8]/30">Business Tours</a>
+          <a onClick={() => { switchView("romance"); setMobileMenuOpen(false); }} className="hover:text-brand-accent cursor-pointer transition-colors font-light py-1 border-b border-[#ecece8]/30">Bespoke Romance</a>
+          <a onClick={() => { switchView("about"); setMobileMenuOpen(false); }} className="hover:text-brand-accent cursor-pointer transition-colors font-light py-1 border-b border-[#ecece8]/30">Our Story</a>
+          <a onClick={() => { switchView("store"); setMobileMenuOpen(false); }} className="hover:text-brand-accent cursor-pointer transition-colors font-light py-1 border-b border-[#ecece8]/30">The Boutique</a>
+          <a onClick={() => { setContactModalOpen(true); setMobileMenuOpen(false); }} className="hover:text-brand-accent cursor-pointer transition-colors font-light py-1">Contact</a>
+        </div>
+
         <a 
           href={calendarBookingLink} 
           target="_blank" 
-          className="w-max border border-[#ecece8] bg-white text-brand-dark px-8 py-3 mt-4 uppercase tracking-widest text-xs font-semibold cursor-pointer rounded-none hover:bg-brand-dark hover:text-white transition-colors"
+          className="w-full text-center border border-[#ecece8] bg-white text-brand-dark py-2.5 mt-5 uppercase tracking-widest text-[10px] font-semibold cursor-pointer rounded-none hover:bg-brand-dark hover:text-white transition-colors"
           id="mobile-enquire-btn"
         >
           Enquire Now
@@ -442,7 +500,7 @@ export default function App() {
                 </div>
                 
                 {/* 4 featured home cards */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 packages-grid">
                   {[
                     southAfricanList[0], // Table Mountain
                     southAfricanList[1], // Peninsula & Penguins
@@ -453,9 +511,9 @@ export default function App() {
                       <div 
                         key={i} 
                         onClick={() => openTourModal(pkg)}
-                        className="bg-white border border-[#ecece8] p-4 group cursor-pointer transition-all duration-500 flex flex-col h-full rounded-none hover:border-[#8c7a5b]"
+                        className="bg-white border border-[#ecece8] p-1 sm:p-1.5 group cursor-pointer transition-all duration-500 flex flex-col h-full rounded-none hover:border-[#8c7a5b] package-card"
                       >
-                        <div className="w-full aspect-[4/5] bg-[#faf9f6]/40 mb-4 overflow-hidden relative">
+                        <div className="w-full aspect-[4/3] bg-[#faf9f6]/40 mb-2 overflow-hidden relative">
                           <img 
                             src={pkg.img} 
                             alt={pkg.title}
@@ -467,13 +525,13 @@ export default function App() {
                               <i key={rIdx} className="fas fa-star text-brand-accent text-[8px]"></i>
                             ))}
                           </div>
-                          <span className="absolute bottom-3 left-3 bg-[#faf9f6] text-brand-dark text-[8.5px] uppercase tracking-widest font-normal border border-[#ecece8] px-2 py-0.5 rounded-none">
+                          <span className="absolute bottom-2 left-2 bg-[#faf9f6] text-brand-dark text-[8px] uppercase tracking-widest font-normal border border-[#ecece8] px-2 py-0.5 rounded-none">
                             {pkg.country}
                           </span>
                         </div>
-                        <div className="pt-2 flex flex-col flex-grow text-center sm:text-left">
+                        <div className="p-1.5 pt-1 flex flex-col flex-grow text-center sm:text-left">
                           <h3 className="text-sm font-light text-brand-dark mb-1 font-serif italic group-hover:text-[#8c7a5b] transition-colors leading-tight">{pkg.title}</h3>
-                          <p className="century-gothic text-brand-dark/50 text-[10.5px] leading-relaxed flex-grow font-light tracking-wide mb-3">{pkg.desc}</p>
+                          <p className="century-gothic text-brand-dark/50 text-[10.5px] leading-relaxed flex-grow font-light tracking-wide mb-3 line-clamp-3">{pkg.desc}</p>
                           <div className="flex items-center justify-between pt-3 border-t border-[#ecece8] mt-auto">
                             <span className="text-[8px] md:text-[9px] uppercase tracking-[0.15em] font-light text-brand-dark/40 flex items-center">
                               <i className="far fa-clock mr-1.5 text-[#8c7a5b] text-[10px]"></i> {pkg.duration}
@@ -577,11 +635,11 @@ export default function App() {
                         <div className="pr-2 flex flex-col flex-grow">
                           <span className="text-[8px] md:text-[9px] font-semibold text-[#8c7a5b] tracking-widest uppercase mb-1 md:mb-2 block">Inspiration</span>
                           <h4 className="font-serif text-sm md:text-base font-medium text-brand-dark mb-1 md:mb-2 group-hover:text-[#8c7a5b] transition-colors leading-tight">The Heartbeat of the Continent</h4>
-                          <p className="text-[9px] md:text-xs text-stone-500 font-light leading-relaxed">Discovering deep cultural roots and untold narratives through diverse local communities.</p>
+                          <p className="text-xs sm:text-sm text-stone-500 font-light leading-relaxed">Discovering deep cultural roots and untold narratives through diverse local communities.</p>
                         </div>
                       </a>
-                      <a className="col-span-1 md:col-span-1 group flex flex-col gap-2 md:gap-4 items-start cursor-pointer bg-white/95 backdrop-blur-sm p-4 border border-white/10 rounded-none shadow-none hover:border-[#D4AF37] transition-all h-full">
-                        <div className="w-full h-24 md:h-48 overflow-hidden rounded-none relative">
+                      <a className="col-span-2 md:col-span-1 group flex flex-col gap-2 md:gap-4 items-start cursor-pointer bg-white/95 backdrop-blur-sm p-4 border border-white/10 rounded-none shadow-none hover:border-[#D4AF37] transition-all h-full">
+                        <div className="w-full h-32 md:h-48 overflow-hidden rounded-none relative">
                           <img 
                             src="https://images.unsplash.com/photo-1516426122078-c23e76319801?q=80&w=800" 
                             alt="Story panel 2" 
@@ -589,8 +647,9 @@ export default function App() {
                           />
                         </div>
                         <div className="pr-1 flex flex-col flex-grow">
-                          <span className="text-[7px] md:text-[9px] font-semibold text-[#8c7a5b] tracking-widest uppercase mb-1 block">Experience</span>
-                          <h4 className="font-serif text-xs md:text-base font-medium text-brand-dark mb-1 group-hover:text-[#8c7a5b] transition-colors leading-tight">Echoes of the Savannah</h4>
+                          <span className="text-[8px] md:text-[9px] font-semibold text-[#8c7a5b] tracking-widest uppercase mb-1 md:mb-2 block">Experience</span>
+                          <h4 className="font-serif text-sm md:text-base font-medium text-brand-dark mb-1 md:mb-2 group-hover:text-[#8c7a5b] transition-colors leading-tight">Echoes of the Savannah</h4>
+                          <p className="text-xs sm:text-sm text-stone-500 font-light leading-relaxed">Immersive wildlife encounters and sunset game drives in the heart of Africa's ultimate wilderness.</p>
                         </div>
                       </a>
                     </div>
@@ -846,7 +905,7 @@ export default function App() {
                         </button>
                       </div>
 
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 tour-cards">
                         {group.list.slice(0, 4).map((pkg, pIdx) => {
                           const starsHtmlList = Array.from({ length: pkg.rating });
 
@@ -854,9 +913,9 @@ export default function App() {
                             <div 
                               key={pIdx}
                               onClick={() => openTourModal(pkg)}
-                              className="bg-white border border-[#ecece8] p-3 rounded-none shadow-none hover:border-[#8c7a5b] transition-all duration-300 overflow-hidden cursor-pointer flex flex-col h-full group"
+                              className="bg-white border border-[#ecece8] p-1 sm:p-1.5 rounded-none shadow-none hover:border-[#8c7a5b] transition-all duration-300 overflow-hidden cursor-pointer flex flex-col h-full group tour-card"
                             >
-                              <div className="w-full aspect-[4/5] bg-[#faf9f6]/40 mb-3 overflow-hidden relative">
+                              <div className="w-full aspect-[4/3] bg-[#faf9f6]/40 mb-2 overflow-hidden relative">
                                 <img 
                                   src={pkg.img} 
                                   alt={pkg.title} 
@@ -927,38 +986,52 @@ export default function App() {
                 </p>
               </div>
 
-              {/* Grid block for corporate features */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-                <div className="bg-white border border-stone-100 shadow-soft rounded-sm p-6 flex flex-col">
-                  <div className="w-full h-32 overflow-hidden mb-4 rounded-sm">
-                    <img src="https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg" className="w-full h-full object-cover" alt="Summits" />
+              {/* Unique Detailed Corporate Features */}
+              <div className="flex items-center justify-between mb-6 max-w-6xl mx-auto px-2 md:px-0">
+                <h3 className="text-lg md:text-xl font-serif font-light text-brand-dark italic">Corporate Solutions</h3>
+              </div>
+
+              <div 
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16 px-2 md:px-0"
+              >
+                <div className="bg-white border border-[#ecece8] p-2 flex flex-col hover:border-[#8c7a5b] hover:shadow-elegant transition-all duration-300">
+                  <div className="w-full aspect-[16/10] overflow-hidden mb-2.5 rounded-none bg-stone-50">
+                    <img src="https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" alt="Summits" />
                   </div>
-                  <h3 className="text-base font-serif italic text-brand-dark font-medium mb-2">Summits & Expos</h3>
-                  <p className="text-stone-500 text-xs font-light leading-relaxed">Comprehensive logistical support for large-scale corporate events. From premium group accommodations to dedicated liaison services.</p>
+                  <div className="p-1 flex flex-col flex-grow">
+                    <h3 className="text-base font-serif italic text-brand-dark font-medium mb-1.5">Summits & Expos</h3>
+                    <p className="text-stone-500 text-xs font-light leading-relaxed">Comprehensive logistical support for large-scale corporate events. From premium group accommodations to dedicated liaison services.</p>
+                  </div>
                 </div>
 
-                <div className="bg-white border border-stone-100 shadow-soft rounded-sm p-6 flex flex-col">
-                  <div className="w-full h-32 overflow-hidden mb-4 rounded-sm">
-                    <img src="https://images.pexels.com/photos/1181396/pexels-photo-1181396.jpeg" className="w-full h-full object-cover" alt="Meetings" />
+                <div className="bg-white border border-[#ecece8] p-2 flex flex-col hover:border-[#8c7a5b] hover:shadow-elegant transition-all duration-300">
+                  <div className="w-full aspect-[16/10] overflow-hidden mb-2.5 rounded-none bg-stone-50">
+                    <img src="https://images.pexels.com/photos/1181396/pexels-photo-1181396.jpeg" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" alt="Meetings" />
                   </div>
-                  <h3 className="text-base font-serif italic text-brand-dark font-medium mb-2">Business Meetings</h3>
-                  <p className="text-stone-500 text-xs font-light leading-relaxed">Secure sophisticated venues and boardrooms equipped with cutting-edge technology across top-tier African business hubs.</p>
+                  <div className="p-1 flex flex-col flex-grow">
+                    <h3 className="text-base font-serif italic text-brand-dark font-medium mb-1.5">Business Meetings</h3>
+                    <p className="text-stone-500 text-xs font-light leading-relaxed">Secure sophisticated venues and boardrooms equipped with cutting-edge technology across top-tier African business hubs.</p>
+                  </div>
                 </div>
 
-                <div className="bg-white border border-stone-100 shadow-soft rounded-sm p-6 flex flex-col">
-                  <div className="w-full h-32 overflow-hidden mb-4 rounded-sm">
-                    <img src="https://images.pexels.com/photos/262047/pexels-photo-262047.jpeg" className="w-full h-full object-cover" alt="Retreats" />
+                <div className="bg-white border border-[#ecece8] p-2 flex flex-col hover:border-[#8c7a5b] hover:shadow-elegant transition-all duration-300">
+                  <div className="w-full aspect-[16/10] overflow-hidden mb-2.5 rounded-none bg-stone-50">
+                    <img src="https://images.pexels.com/photos/262047/pexels-photo-262047.jpeg" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" alt="Retreats" />
                   </div>
-                  <h3 className="text-base font-serif italic text-brand-dark font-medium mb-2">Networking Retreats</h3>
-                  <p className="text-stone-500 text-xs font-light leading-relaxed">Forge stronger relationships in extraordinary settings: private dinners under the stars or a sunset cruise tailored strictly to your delegates.</p>
+                  <div className="p-1 flex flex-col flex-grow">
+                    <h3 className="text-base font-serif italic text-brand-dark font-medium mb-1.5">Networking Retreats</h3>
+                    <p className="text-stone-500 text-xs font-light leading-relaxed">Forge stronger relationships in extraordinary settings: private dinners under the stars or a sunset cruise tailored strictly to your delegates.</p>
+                  </div>
                 </div>
 
-                <div className="bg-white border border-stone-100 shadow-soft rounded-sm p-6 flex flex-col">
-                  <div className="w-full h-32 overflow-hidden mb-4 rounded-sm">
-                    <img src="https://images.pexels.com/photos/5778221/pexels-photo-5778221.jpeg" className="w-full h-full object-cover" alt="Incentives" />
+                <div className="bg-white border border-[#ecece8] p-2 flex flex-col hover:border-[#8c7a5b] hover:shadow-elegant transition-all duration-300">
+                  <div className="w-full aspect-[16/10] overflow-hidden mb-2.5 rounded-none bg-stone-50">
+                    <img src="https://images.pexels.com/photos/5778221/pexels-photo-5778221.jpeg" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" alt="Incentives" />
                   </div>
-                  <h3 className="text-base font-serif italic text-brand-dark font-medium mb-2">Incentive Travel</h3>
-                  <p className="text-stone-500 text-xs font-light leading-relaxed">Reward your top performers with once-in-a-lifetime luxury safaris or island escapes designed to motivate and inspire.</p>
+                  <div className="p-1 flex flex-col flex-grow">
+                    <h3 className="text-base font-serif italic text-brand-dark font-medium mb-1.5">Incentive Travel</h3>
+                    <p className="text-stone-500 text-xs font-light leading-relaxed">Reward your top performers with once-in-a-lifetime luxury safaris or island escapes designed to motivate and inspire.</p>
+                  </div>
                 </div>
               </div>
 
@@ -1030,37 +1103,51 @@ export default function App() {
               </div>
 
               {/* Unique Detailed Romance Features */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-                <div className="bg-white border border-stone-100 shadow-soft rounded-sm p-6 flex flex-col">
-                  <div className="w-full h-32 overflow-hidden mb-4 rounded-sm">
-                    <img src="https://images.pexels.com/photos/1024960/pexels-photo-1024960.jpeg" className="w-full h-full object-cover" alt="Sails" />
+              <div className="flex items-center justify-between mb-6 max-w-6xl mx-auto px-2 md:px-0">
+                <h3 className="text-lg md:text-xl font-serif font-light text-brand-dark italic">Signature Romance Highlights</h3>
+              </div>
+
+              <div 
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16 px-2 md:px-0"
+              >
+                <div className="bg-white border border-[#ecece8] p-2 flex flex-col hover:border-[#8c7a5b] hover:shadow-elegant transition-all duration-300">
+                  <div className="w-full aspect-[16/10] overflow-hidden mb-2.5 rounded-none bg-stone-50">
+                    <img src="https://images.pexels.com/photos/1024960/pexels-photo-1024960.jpeg" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" alt="Sails" />
                   </div>
-                  <h3 className="text-base font-serif italic text-brand-dark font-medium mb-2">Sunset Sails</h3>
-                  <p className="text-stone-500 text-xs font-light leading-relaxed">Private catamaran sunset sails and picnic excursions to secluded, pristine sandbanks.</p>
+                  <div className="p-1 flex flex-col flex-grow">
+                    <h3 className="text-base font-serif italic text-brand-dark font-medium mb-1.5">Sunset Sails</h3>
+                    <p className="text-stone-500 text-xs font-light leading-relaxed">Private catamaran sunset sails and picnic excursions to secluded, pristine sandbanks.</p>
+                  </div>
                 </div>
 
-                <div className="bg-white border border-stone-100 shadow-soft rounded-sm p-6 flex flex-col">
-                  <div className="w-full h-32 overflow-hidden mb-4 rounded-sm">
-                    <img src="https://images.pexels.com/photos/3757942/pexels-photo-3757942.jpeg" className="w-full h-full object-cover" alt="Wellness" />
+                <div className="bg-white border border-[#ecece8] p-2 flex flex-col hover:border-[#8c7a5b] hover:shadow-elegant transition-all duration-300">
+                  <div className="w-full aspect-[16/10] overflow-hidden mb-2.5 rounded-none bg-stone-50">
+                    <img src="https://images.pexels.com/photos/3757942/pexels-photo-3757942.jpeg" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" alt="Wellness" />
                   </div>
-                  <h3 className="text-base font-serif italic text-brand-dark font-medium mb-2">Couples' Wellness</h3>
-                  <p className="text-stone-500 text-xs font-light leading-relaxed">Indulgent therapeutic spa treatments set directly over beautiful ocean or wilderness pavilions.</p>
+                  <div className="p-1 flex flex-col flex-grow">
+                    <h3 className="text-base font-serif italic text-brand-dark font-medium mb-1.5">Couples' Wellness</h3>
+                    <p className="text-stone-500 text-xs font-light leading-relaxed">Indulgent therapeutic spa treatments set directly over beautiful ocean or wilderness pavilions.</p>
+                  </div>
                 </div>
 
-                <div className="bg-white border border-stone-100 shadow-soft rounded-sm p-6 flex flex-col">
-                  <div className="w-full h-32 overflow-hidden mb-4 rounded-sm">
-                    <img src="https://images.pexels.com/photos/3608797/pexels-photo-3608797.jpeg" className="w-full h-full object-cover" alt="concierge" />
+                <div className="bg-white border border-[#ecece8] p-2 flex flex-col hover:border-[#8c7a5b] hover:shadow-elegant transition-all duration-300">
+                  <div className="w-full aspect-[16/10] overflow-hidden mb-2.5 rounded-none bg-stone-50">
+                    <img src="https://images.pexels.com/photos/3608797/pexels-photo-3608797.jpeg" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" alt="concierge" />
                   </div>
-                  <h3 className="text-base font-serif italic text-brand-dark font-medium mb-2">Curated Touches</h3>
-                  <p className="text-stone-500 text-xs font-light leading-relaxed">Complimentary romantic upgrades, direct welcome champagne, and custom butler-level concierge planning.</p>
+                  <div className="p-1 flex flex-col flex-grow">
+                    <h3 className="text-base font-serif italic text-brand-dark font-medium mb-1.5">Curated Touches</h3>
+                    <p className="text-stone-500 text-xs font-light leading-relaxed">Complimentary romantic upgrades, direct welcome champagne, and custom butler-level concierge planning.</p>
+                  </div>
                 </div>
 
-                <div className="bg-white border border-stone-100 shadow-soft rounded-sm p-6 flex flex-col">
-                  <div className="w-full h-32 overflow-hidden mb-4 rounded-sm">
-                    <img src="https://images.pexels.com/photos/1449729/pexels-photo-1449729.jpeg" className="w-full h-full object-cover" alt="Villas" />
+                <div className="bg-white border border-[#ecece8] p-2 flex flex-col hover:border-[#8c7a5b] hover:shadow-elegant transition-all duration-300">
+                  <div className="w-full aspect-[16/10] overflow-hidden mb-2.5 rounded-none bg-stone-50">
+                    <img src="https://images.pexels.com/photos/1449729/pexels-photo-1449729.jpeg" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" alt="Villas" />
                   </div>
-                  <h3 className="text-base font-serif italic text-brand-dark font-medium mb-2">Private Wilderness Villas</h3>
-                  <p className="text-stone-500 text-xs font-light leading-relaxed">Ultra-isolated villa residencies boasting private viewing platforms of native game or sparkling lagoons.</p>
+                  <div className="p-1 flex flex-col flex-grow">
+                    <h3 className="text-base font-serif italic text-brand-dark font-medium mb-1.5">Private Wilderness Villas</h3>
+                    <p className="text-stone-500 text-xs font-light leading-relaxed">Ultra-isolated villa residencies boasting private viewing platforms of native game or sparkling lagoons.</p>
+                  </div>
                 </div>
               </div>
 
@@ -1179,18 +1266,39 @@ export default function App() {
               
               {/* SECTION 1: Explore our Tanzanites (Replaced African Diamonds) */}
               <div className="mb-20">
-                <div className="flex items-center justify-center mb-12">
+                <div className="flex items-center justify-between mb-8 max-w-5xl mx-auto px-4 gap-4">
                   <div className="hidden md:block flex-1 h-[1px] bg-[#ecece8]"></div>
-                  <h2 className="text-2xl md:text-3xl font-serif font-light text-brand-dark px-4 md:px-8 italic text-center">Explore our Tanzanites</h2>
+                  <h2 className="text-2xl md:text-3xl font-serif font-light text-brand-dark px-2 md:px-8 italic text-center">Explore our Tanzanites</h2>
                   <div className="hidden md:block flex-1 h-[1px] bg-[#ecece8]"></div>
+                  
+                  {/* Scrolling Arrows */}
+                  <div className="flex items-center gap-1.5 shrink-0">
+                    <button 
+                      onClick={() => scrollContainer(tanzaniteScrollRef, "left")} 
+                      className="w-8 h-8 rounded-full border border-stone-200 text-stone-600 hover:border-brand-accent hover:text-brand-accent transition-colors flex items-center justify-center cursor-pointer bg-white shadow-soft"
+                      aria-label="Scroll left"
+                    >
+                      <i className="fas fa-chevron-left text-[9px]"></i>
+                    </button>
+                    <button 
+                      onClick={() => scrollContainer(tanzaniteScrollRef, "right")} 
+                      className="w-8 h-8 rounded-full border border-stone-200 text-stone-600 hover:border-brand-accent hover:text-brand-accent transition-colors flex items-center justify-center cursor-pointer bg-white shadow-soft"
+                      aria-label="Scroll right"
+                    >
+                      <i className="fas fa-chevron-right text-[9px]"></i>
+                    </button>
+                  </div>
                 </div>
 
-                {/* Grid is Centered, Same Card Sizes (neither too big nor too wide) */}
-                <div className="flex flex-wrap justify-center items-center gap-6 md:gap-8 max-w-5xl mx-auto">
+                {/* Horizontal Scroll on Mobile, wrapped on Desktop */}
+                <div 
+                  ref={tanzaniteScrollRef}
+                  className="flex overflow-x-auto md:overflow-x-visible md:flex-wrap md:justify-center items-stretch gap-6 md:gap-8 max-w-5xl mx-auto scrollbar-none snap-x snap-mandatory flex-nowrap pb-4 cards-container"
+                >
                   {tanzaniteProducts.map((item, idx) => (
                     <div 
                       key={idx}
-                      className="w-full max-w-[280px] sm:w-[260px] md:w-[280px] h-[370px] bg-white border border-[#ecece8] rounded-none shadow-none hover:border-[#D4AF37] transition-all duration-300 flex flex-col justify-between group overflow-hidden"
+                      className="w-[260px] md:w-[280px] shrink-0 h-[370px] bg-white border border-[#ecece8] rounded-none shadow-none hover:border-[#D4AF37] transition-all duration-300 flex flex-col justify-between group overflow-hidden card snap-center"
                     >
                       <div className="relative h-48 overflow-hidden bg-[#faf9f6]/50 shrink-0">
                         <img 
@@ -1220,18 +1328,39 @@ export default function App() {
 
               {/* SECTION 2: Authentic Art (Replaced images) */}
               <div className="mb-10">
-                <div className="flex items-center justify-center mb-12">
+                <div className="flex items-center justify-between mb-8 max-w-5xl mx-auto px-4 gap-4">
                   <div className="hidden md:block flex-1 h-[1px] bg-[#ecece8]"></div>
-                  <h2 className="text-2xl md:text-3xl font-serif font-light text-brand-dark px-4 md:px-8 italic text-center">Authentic Art</h2>
+                  <h2 className="text-2xl md:text-3xl font-serif font-light text-brand-dark px-2 md:px-8 italic text-center">Authentic Art</h2>
                   <div className="hidden md:block flex-1 h-[1px] bg-[#ecece8]"></div>
+                  
+                  {/* Scrolling Arrows */}
+                  <div className="flex items-center gap-1.5 shrink-0">
+                    <button 
+                      onClick={() => scrollContainer(artScrollRef, "left")} 
+                      className="w-8 h-8 rounded-full border border-stone-200 text-stone-600 hover:border-brand-accent hover:text-brand-accent transition-colors flex items-center justify-center cursor-pointer bg-white shadow-soft"
+                      aria-label="Scroll left"
+                    >
+                      <i className="fas fa-chevron-left text-[9px]"></i>
+                    </button>
+                    <button 
+                      onClick={() => scrollContainer(artScrollRef, "right")} 
+                      className="w-8 h-8 rounded-full border border-stone-200 text-stone-600 hover:border-brand-accent hover:text-brand-accent transition-colors flex items-center justify-center cursor-pointer bg-white shadow-soft"
+                      aria-label="Scroll right"
+                    >
+                      <i className="fas fa-chevron-right text-[9px]"></i>
+                    </button>
+                  </div>
                 </div>
 
-                {/* Grid is Centered, Same Card Sizes, Authentic Art made a bit longer (h-[450px], img: h-64) */}
-                <div className="flex flex-wrap justify-center items-center gap-6 md:gap-8 max-w-5xl mx-auto">
+                {/* Horizontal Scroll on Mobile, wrapped on Desktop */}
+                <div 
+                  ref={artScrollRef}
+                  className="flex overflow-x-auto md:overflow-x-visible md:flex-wrap md:justify-center items-stretch gap-6 md:gap-8 max-w-5xl mx-auto scrollbar-none snap-x snap-mandatory flex-nowrap pb-4 cards-container"
+                >
                   {artItems.map((item, idx) => (
                     <div 
                       key={idx}
-                      className="w-full max-w-[280px] sm:w-[260px] md:w-[280px] h-[450px] bg-white border border-[#ecece8] rounded-none shadow-none hover:border-[#D4AF37] transition-all duration-300 flex flex-col justify-between group overflow-hidden"
+                      className="w-[260px] md:w-[280px] shrink-0 h-[450px] bg-white border border-[#ecece8] rounded-none shadow-none hover:border-[#D4AF37] transition-all duration-300 flex flex-col justify-between group overflow-hidden card snap-center"
                     >
                       <div className="relative h-64 overflow-hidden bg-[#faf9f6]/50 shrink-0 p-3">
                         <img 
@@ -1308,39 +1437,64 @@ export default function App() {
               {/* SOUTH AFRICA (10 cards in total, 5 in a row flat, custom tags, NO categories) */}
               {selectedDestId === "south-africa" && (
                 <div className="mb-16">
-                  <div className="flex items-center mb-6 px-2 md:px-0">
+                  <div className="flex items-center justify-between mb-6 px-2 md:px-0 gap-4">
                     <h3 className="text-2xl md:text-3xl font-serif italic text-brand-dark">Curated South African Packages</h3>
-                    <div className="flex-grow h-px bg-stone-200 ml-4 animate-pulse"></div>
+                    <div className="hidden md:block flex-grow h-px bg-stone-200 ml-4 animate-pulse"></div>
+                    
+                    {/* Scrolling Arrows */}
+                    <div className="flex items-center gap-1.5 shrink-0">
+                      <button 
+                        onClick={() => scrollContainer(southAfricaScrollRef, "left")} 
+                        className="w-8 h-8 rounded-full border border-stone-200 text-stone-600 hover:border-brand-accent hover:text-brand-accent transition-colors flex items-center justify-center cursor-pointer bg-white shadow-soft"
+                        aria-label="Scroll left"
+                      >
+                        <i className="fas fa-chevron-left text-[9px]"></i>
+                      </button>
+                      <button 
+                        onClick={() => scrollContainer(southAfricaScrollRef, "right")} 
+                        className="w-8 h-8 rounded-full border border-stone-200 text-stone-600 hover:border-brand-accent hover:text-brand-accent transition-colors flex items-center justify-center cursor-pointer bg-white shadow-soft"
+                        aria-label="Scroll right"
+                      >
+                        <i className="fas fa-chevron-right text-[9px]"></i>
+                      </button>
+                    </div>
                   </div>
                   
-                  {/* 5 in a row columns layout on desktop */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                  {/* Grid 5 columns on desktop, 2 side-by-side on mobile */}
+                  <div 
+                    ref={southAfricaScrollRef}
+                    className="grid grid-cols-2 lg:grid-cols-5 gap-3 md:gap-6 pb-4 px-2 md:px-0"
+                  >
                     {southAfricanList.map((pkg, idx) => {
-                      const colorClass = countryColors[pkg.country] || "bg-stone-500";
                       return (
                         <div 
                           key={idx}
                           onClick={() => openTourModal(pkg)}
-                          className="bg-white border border-stone-100 rounded-sm shadow-soft hover:shadow-elegant transition-shadow duration-300 overflow-hidden cursor-pointer flex flex-col h-full group"
+                          className="bg-white border border-[#ecece8] p-1 sm:p-1.5 group cursor-pointer transition-all duration-500 flex flex-col h-full rounded-none hover:border-[#8c7a5b] destination-card"
                         >
-                          <div className="relative h-40 overflow-hidden bg-stone-50 shrink-0">
-                            <img src={pkg.img} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt={pkg.title} />
-                            <span className={`absolute bottom-2 left-2 country-badge ${colorClass} text-[8px]`}>
+                          <div className="w-full aspect-[4/3] bg-[#faf9f6]/40 mb-2 overflow-hidden relative shrink-0">
+                            <img src={pkg.img} className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-1000" alt={pkg.title} />
+                            <span className="absolute bottom-2 left-2 bg-[#faf9f6] text-brand-dark text-[8px] uppercase tracking-widest font-normal border border-[#ecece8] px-1.5 py-0.5 rounded-none">
                               {pkg.country}
                             </span>
                           </div>
-                          <div className="p-4 flex flex-col flex-grow text-center sm:text-left justify-between">
+                          <div className="pt-1 flex flex-col flex-grow text-center sm:text-left justify-between">
                             <div>
-                              <h4 className="font-serif italic font-medium text-brand-dark text-sm group-hover:text-brand-accent transition-colors leading-tight mb-2">
+                              <h4 className="font-serif italic font-medium text-brand-dark text-xs sm:text-sm group-hover:text-[#8c7a5b] transition-colors leading-tight mb-1.5">
                                 {pkg.title}
                               </h4>
-                              <p className="century-gothic text-stone-500 text-[10px] font-light leading-normal line-clamp-4 mb-4">
+                              <p className="century-gothic text-stone-500 text-[10px] leading-relaxed font-light line-clamp-3 mb-3">
                                 {pkg.desc}
                               </p>
                             </div>
-                            <span className="text-[9px] text-[#8c7a5b] font-semibold tracking-widest uppercase mt-auto block pb-1 border-b border-transparent hover:border-[#8c7a5b] w-max mx-auto sm:mx-0">
-                              Discover Outing <i className="fas fa-arrow-right ml-1 text-[7px]"></i>
-                            </span>
+                            <div className="flex items-center justify-between pt-2 border-t border-[#ecece8] mt-auto">
+                              <span className="text-[8px] md:text-[9.5px] uppercase tracking-[0.1em] font-light text-brand-dark/40 flex items-center">
+                                <i className="far fa-clock mr-1 text-[#8c7a5b] text-[9px]"></i> {pkg.duration || "1 Day"}
+                              </span>
+                              <span className="text-[9px] uppercase tracking-[0.1em] font-medium text-[#8c7a5b] flex items-center font-sans">
+                                Discover <i className="fas fa-chevron-right ml-1 text-[7px]"></i>
+                              </span>
+                            </div>
                           </div>
                         </div>
                       );
@@ -1352,39 +1506,64 @@ export default function App() {
               {/* VICTORIA FALLS (5 in a row flat, exactly aligned) */}
               {selectedDestId === "victoria-falls" && (
                 <div className="mb-16">
-                  <div className="flex items-center mb-6 px-2 md:px-0">
+                  <div className="flex items-center justify-between mb-6 px-2 md:px-0 gap-4">
                     <h3 className="text-2xl md:text-3xl font-serif italic text-brand-dark">Curated Falls Experience</h3>
-                    <div className="flex-grow h-px bg-stone-200 ml-4 animate-pulse"></div>
+                    <div className="hidden md:block flex-grow h-px bg-stone-200 ml-4 animate-pulse"></div>
+                    
+                    {/* Scrolling Arrows */}
+                    <div className="flex items-center gap-1.5 shrink-0">
+                      <button 
+                        onClick={() => scrollContainer(victoriaFallsScrollRef, "left")} 
+                        className="w-8 h-8 rounded-full border border-stone-200 text-stone-600 hover:border-brand-accent hover:text-brand-accent transition-colors flex items-center justify-center cursor-pointer bg-white shadow-soft"
+                        aria-label="Scroll left"
+                      >
+                        <i className="fas fa-chevron-left text-[9px]"></i>
+                      </button>
+                      <button 
+                        onClick={() => scrollContainer(victoriaFallsScrollRef, "right")} 
+                        className="w-8 h-8 rounded-full border border-stone-200 text-stone-600 hover:border-brand-accent hover:text-brand-accent transition-colors flex items-center justify-center cursor-pointer bg-white shadow-soft"
+                        aria-label="Scroll right"
+                      >
+                        <i className="fas fa-chevron-right text-[9px]"></i>
+                      </button>
+                    </div>
                   </div>
                   
-                  {/* Grid 5 columns on desktop */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                  {/* Grid 5 columns on desktop, 2 side-by-side on mobile */}
+                  <div 
+                    ref={victoriaFallsScrollRef}
+                    className="grid grid-cols-2 lg:grid-cols-5 gap-3 md:gap-6 pb-4 px-2 md:px-0"
+                  >
                     {victoriaFallsList.map((pkg, idx) => {
-                      const colorClass = countryColors[pkg.country] || "bg-stone-500";
                       return (
                         <div 
                           key={idx}
                           onClick={() => openTourModal(pkg)}
-                          className="bg-white border border-stone-100 rounded-sm shadow-soft hover:shadow-elegant transition-shadow duration-300 overflow-hidden cursor-pointer flex flex-col h-full group"
+                          className="bg-white border border-[#ecece8] p-1 sm:p-1.5 group cursor-pointer transition-all duration-500 flex flex-col h-full rounded-none hover:border-[#8c7a5b] destination-card"
                         >
-                          <div className="relative h-40 overflow-hidden bg-stone-50 shrink-0">
-                            <img src={pkg.img} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt={pkg.title} />
-                            <span className={`absolute bottom-2 left-2 country-badge ${colorClass} text-[8px]`}>
+                          <div className="w-full aspect-[4/3] bg-[#faf9f6]/40 mb-2 overflow-hidden relative shrink-0">
+                            <img src={pkg.img} className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-1000" alt={pkg.title} />
+                            <span className="absolute bottom-2 left-2 bg-[#faf9f6] text-brand-dark text-[8px] uppercase tracking-widest font-normal border border-[#ecece8] px-1.5 py-0.5 rounded-none">
                               {pkg.country}
                             </span>
                           </div>
-                          <div className="p-4 flex flex-col flex-grow text-center sm:text-left justify-between">
+                          <div className="pt-1 flex flex-col flex-grow text-center sm:text-left justify-between">
                             <div>
-                              <h4 className="font-serif italic font-medium text-brand-dark text-sm group-hover:text-brand-accent transition-colors leading-tight mb-2">
+                              <h4 className="font-serif italic font-medium text-brand-dark text-xs sm:text-sm group-hover:text-[#8c7a5b] transition-colors leading-tight mb-1.5">
                                 {pkg.title}
                               </h4>
-                              <p className="century-gothic text-stone-500 text-[10px] font-light leading-normal line-clamp-4 mb-4">
+                              <p className="century-gothic text-stone-500 text-[10px] leading-relaxed font-light line-clamp-3 mb-3">
                                 {pkg.desc}
                               </p>
                             </div>
-                            <span className="text-[9px] text-[#8c7a5b] font-semibold tracking-widest uppercase mt-auto block pb-1 border-b border-transparent hover:border-[#8c7a5b] w-max mx-auto sm:mx-0">
-                              Discover Outing <i className="fas fa-arrow-right ml-1 text-[7px]"></i>
-                            </span>
+                            <div className="flex items-center justify-between pt-2 border-t border-[#ecece8] mt-auto">
+                              <span className="text-[8px] md:text-[9.5px] uppercase tracking-[0.1em] font-light text-brand-dark/40 flex items-center">
+                                <i className="far fa-clock mr-1 text-[#8c7a5b] text-[9px]"></i> {pkg.duration || "1 Day"}
+                              </span>
+                              <span className="text-[9px] uppercase tracking-[0.1em] font-medium text-[#8c7a5b] flex items-center font-sans">
+                                Discover <i className="fas fa-chevron-right ml-1 text-[7px]"></i>
+                              </span>
+                            </div>
                           </div>
                         </div>
                       );
@@ -1396,39 +1575,64 @@ export default function App() {
               {/* MAURITIUS (First 10 of Mauritus, 5 in a row, with load more arrow/expand) */}
               {selectedDestId === "mauritius" && (
                 <div className="mb-16">
-                  <div className="flex items-center mb-6 px-2 md:px-0">
+                  <div className="flex items-center justify-between mb-6 px-2 md:px-0 gap-4">
                     <h3 className="text-2xl md:text-3xl font-serif italic text-brand-dark font-light">Available Luxury Resorts</h3>
-                    <div className="flex-grow h-px bg-stone-200 ml-4"></div>
+                    <div className="hidden md:block flex-grow h-px bg-stone-200 ml-4"></div>
+                    
+                    {/* Scrolling Arrows */}
+                    <div className="flex items-center gap-1.5 shrink-0">
+                      <button 
+                        onClick={() => scrollContainer(mauritiusScrollRef, "left")} 
+                        className="w-8 h-8 rounded-full border border-stone-200 text-stone-600 hover:border-brand-accent hover:text-brand-accent transition-colors flex items-center justify-center cursor-pointer bg-white shadow-soft"
+                        aria-label="Scroll left"
+                      >
+                        <i className="fas fa-chevron-left text-[9px]"></i>
+                      </button>
+                      <button 
+                        onClick={() => scrollContainer(mauritiusScrollRef, "right")} 
+                        className="w-8 h-8 rounded-full border border-stone-200 text-stone-600 hover:border-brand-accent hover:text-brand-accent transition-colors flex items-center justify-center cursor-pointer bg-white shadow-soft"
+                        aria-label="Scroll right"
+                      >
+                        <i className="fas fa-chevron-right text-[9px]"></i>
+                      </button>
+                    </div>
                   </div>
 
-                  {/* 5 in a row on desktop */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                  {/* Grid 5 columns on desktop, 2 side-by-side on mobile */}
+                  <div 
+                    ref={mauritiusScrollRef}
+                    className="grid grid-cols-2 lg:grid-cols-5 gap-3 md:gap-6 pb-4 px-2 md:px-0"
+                  >
                     {mauritiusList.slice(0, showAllMauritius ? mauritiusList.length : 10).map((pkg, idx) => {
-                      const colorClass = countryColors[pkg.country] || "bg-stone-500";
                       return (
                         <div 
                           key={idx}
                           onClick={() => openTourModal(pkg)}
-                          className="bg-white border border-stone-100 rounded-sm shadow-soft hover:shadow-elegant transition-shadow duration-300 overflow-hidden cursor-pointer flex flex-col h-full group"
+                          className="bg-white border border-[#ecece8] p-1 sm:p-1.5 group cursor-pointer transition-all duration-500 flex flex-col h-full rounded-none hover:border-[#8c7a5b] destination-card"
                         >
-                          <div className="relative h-40 overflow-hidden bg-stone-50 shrink-0">
-                            <img src={pkg.img} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt={pkg.title} />
-                            <span className={`absolute bottom-2 left-2 country-badge ${colorClass} text-[8px]`}>
+                          <div className="w-full aspect-[4/3] bg-[#faf9f6]/40 mb-2 overflow-hidden relative shrink-0">
+                            <img src={pkg.img} className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-1000" alt={pkg.title} />
+                            <span className="absolute bottom-2 left-2 bg-[#faf9f6] text-brand-dark text-[8px] uppercase tracking-widest font-normal border border-[#ecece8] px-1.5 py-0.5 rounded-none">
                               {pkg.country}
                             </span>
                           </div>
-                          <div className="p-4 flex flex-col flex-grow text-center sm:text-left justify-between">
+                          <div className="pt-1 flex flex-col flex-grow text-center sm:text-left justify-between">
                             <div>
-                              <h4 className="font-serif italic font-medium text-brand-dark text-xs sm:text-sm group-hover:text-brand-accent transition-colors leading-snug mb-2 font-serif font-light">
+                              <h4 className="font-serif italic font-medium text-brand-dark text-xs sm:text-sm group-hover:text-[#8c7a5b] transition-colors leading-tight mb-1.5">
                                 {pkg.title}
                               </h4>
-                              <p className="century-gothic text-stone-500 text-[10px] font-light leading-normal line-clamp-4 mb-4">
+                              <p className="century-gothic text-stone-500 text-[10px] leading-relaxed font-light line-clamp-3 mb-3">
                                 {pkg.desc}
                               </p>
                             </div>
-                            <span className="text-[9px] text-[#8c7a5b] font-semibold tracking-widest uppercase mt-auto block pb-1 border-b border-transparent hover:border-[#8c7a5b] w-max mx-auto sm:mx-0">
-                              Discover Outing <i className="fas fa-arrow-right ml-1 text-[7px]"></i>
-                            </span>
+                            <div className="flex items-center justify-between pt-2 border-t border-[#ecece8] mt-auto">
+                              <span className="text-[8px] md:text-[9.5px] uppercase tracking-[0.1em] font-light text-brand-dark/40 flex items-center">
+                                <i className="far fa-clock mr-1 text-[#8c7a5b] text-[9px]"></i> {pkg.duration || "1 Day"}
+                              </span>
+                              <span className="text-[9px] uppercase tracking-[0.1em] font-medium text-[#8c7a5b] flex items-center font-sans">
+                                Discover <i className="fas fa-chevron-right ml-1 text-[7px]"></i>
+                              </span>
+                            </div>
                           </div>
                         </div>
                       );
@@ -1452,39 +1656,64 @@ export default function App() {
               {/* ZANZIBAR (First 10, 5 in a row, see more expanding script) */}
               {selectedDestId === "zanzibar" && (
                 <div className="mb-16">
-                  <div className="flex items-center mb-6 px-2 md:px-0">
+                  <div className="flex items-center justify-between mb-6 px-2 md:px-0 gap-4">
                     <h3 className="text-2xl md:text-3xl font-serif italic text-brand-dark font-light">Exotic Zanzibar Resorts</h3>
-                    <div className="flex-grow h-px bg-stone-200 ml-4"></div>
+                    <div className="hidden md:block flex-grow h-px bg-stone-200 ml-4"></div>
+                    
+                    {/* Scrolling Arrows */}
+                    <div className="flex items-center gap-1.5 shrink-0">
+                      <button 
+                        onClick={() => scrollContainer(zanzibarScrollRef, "left")} 
+                        className="w-8 h-8 rounded-full border border-stone-200 text-stone-600 hover:border-brand-accent hover:text-brand-accent transition-colors flex items-center justify-center cursor-pointer bg-white shadow-soft"
+                        aria-label="Scroll left"
+                      >
+                        <i className="fas fa-chevron-left text-[9px]"></i>
+                      </button>
+                      <button 
+                        onClick={() => scrollContainer(zanzibarScrollRef, "right")} 
+                        className="w-8 h-8 rounded-full border border-stone-200 text-stone-600 hover:border-brand-accent hover:text-brand-accent transition-colors flex items-center justify-center cursor-pointer bg-white shadow-soft"
+                        aria-label="Scroll right"
+                      >
+                        <i className="fas fa-chevron-right text-[9px]"></i>
+                      </button>
+                    </div>
                   </div>
 
-                  {/* 5 in a row on desktop */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                  {/* Grid 5 columns on desktop, 2 side-by-side on mobile */}
+                  <div 
+                    ref={zanzibarScrollRef}
+                    className="grid grid-cols-2 lg:grid-cols-5 gap-3 md:gap-6 pb-4 px-2 md:px-0"
+                  >
                     {zanzibarList.slice(0, showAllZanzibar ? zanzibarList.length : 10).map((pkg, idx) => {
-                      const colorClass = countryColors[pkg.country] || "bg-stone-500";
                       return (
                         <div 
                           key={idx}
                           onClick={() => openTourModal(pkg)}
-                          className="bg-white border border-stone-100 rounded-sm shadow-soft hover:shadow-elegant transition-shadow duration-300 overflow-hidden cursor-pointer flex flex-col h-full group"
+                          className="bg-white border border-[#ecece8] p-1 sm:p-1.5 group cursor-pointer transition-all duration-500 flex flex-col h-full rounded-none hover:border-[#8c7a5b] destination-card"
                         >
-                          <div className="relative h-40 overflow-hidden bg-stone-50 shrink-0">
-                            <img src={pkg.img} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt={pkg.title} />
-                            <span className={`absolute bottom-2 left-2 country-badge ${colorClass} text-[8px]`}>
+                          <div className="w-full aspect-[4/3] bg-[#faf9f6]/40 mb-2 overflow-hidden relative shrink-0">
+                            <img src={pkg.img} className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-1000" alt={pkg.title} />
+                            <span className="absolute bottom-2 left-2 bg-[#faf9f6] text-brand-dark text-[8px] uppercase tracking-widest font-normal border border-[#ecece8] px-1.5 py-0.5 rounded-none">
                               {pkg.country}
                             </span>
                           </div>
-                          <div className="p-4 flex flex-col flex-grow text-center sm:text-left justify-between">
+                          <div className="pt-1 flex flex-col flex-grow text-center sm:text-left justify-between">
                             <div>
-                              <h4 className="font-serif italic font-medium text-brand-dark text-xs sm:text-sm group-hover:text-brand-accent transition-colors leading-snug mb-2 font-serif font-light">
+                              <h4 className="font-serif italic font-medium text-brand-dark text-xs sm:text-sm group-hover:text-[#8c7a5b] transition-colors leading-tight mb-1.5">
                                 {pkg.title}
                               </h4>
-                              <p className="century-gothic text-stone-500 text-[10px] font-light leading-normal line-clamp-4 mb-4">
+                              <p className="century-gothic text-stone-500 text-[10px] leading-relaxed font-light line-clamp-3 mb-3">
                                 {pkg.desc}
                               </p>
                             </div>
-                            <span className="text-[9px] text-[#8c7a5b] font-semibold tracking-widest uppercase mt-auto block pb-1 border-b border-transparent hover:border-[#8c7a5b] w-max mx-auto sm:mx-0">
-                              Discover Outing <i className="fas fa-arrow-right ml-1 text-[7px]"></i>
-                            </span>
+                            <div className="flex items-center justify-between pt-2 border-t border-[#ecece8] mt-auto">
+                              <span className="text-[8px] md:text-[9.5px] uppercase tracking-[0.1em] font-light text-brand-dark/40 flex items-center">
+                                <i className="far fa-clock mr-1 text-[#8c7a5b] text-[9px]"></i> {pkg.duration || "1 Day"}
+                              </span>
+                              <span className="text-[9px] uppercase tracking-[0.1em] font-medium text-[#8c7a5b] flex items-center font-sans">
+                                Discover <i className="fas fa-chevron-right ml-1 text-[7px]"></i>
+                              </span>
+                            </div>
                           </div>
                         </div>
                       );
@@ -1508,36 +1737,64 @@ export default function App() {
               {/* RENDER OTHER STANDARD DESTINATIONS */}
               {!["south-africa", "victoria-falls", "mauritius", "zanzibar"].includes(selectedDestId) && (
                 <div className="mb-16">
-                  <div className="flex items-center mb-6 px-2 md:px-0">
+                  <div className="flex items-center justify-between mb-6 px-2 md:px-0 gap-4">
                     <h3 className="text-2xl md:text-3xl font-serif italic text-brand-dark">Curated Outings & Resorts</h3>
-                    <div className="flex-grow h-px bg-stone-200 ml-4"></div>
+                    <div className="hidden md:block flex-grow h-px bg-stone-200 ml-4"></div>
+                    
+                    {/* Scrolling Arrows */}
+                    <div className="flex items-center gap-1.5 shrink-0">
+                      <button 
+                        onClick={() => scrollContainer(otherDestScrollRef, "left")} 
+                        className="w-8 h-8 rounded-full border border-stone-200 text-stone-600 hover:border-brand-accent hover:text-brand-accent transition-colors flex items-center justify-center cursor-pointer bg-white shadow-soft"
+                        aria-label="Scroll left"
+                      >
+                        <i className="fas fa-chevron-left text-[9px]"></i>
+                      </button>
+                      <button 
+                        onClick={() => scrollContainer(otherDestScrollRef, "right")} 
+                        className="w-8 h-8 rounded-full border border-stone-200 text-stone-600 hover:border-brand-accent hover:text-brand-accent transition-colors flex items-center justify-center cursor-pointer bg-white shadow-soft"
+                        aria-label="Scroll right"
+                      >
+                        <i className="fas fa-chevron-right text-[9px]"></i>
+                      </button>
+                    </div>
                   </div>
                   
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {/* Grid layout on desktop, 2 side-by-side on mobile */}
+                  <div 
+                    ref={otherDestScrollRef}
+                    className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6 pb-4 px-2 md:px-0"
+                  >
                     {allTourPackages.filter((p) => p.destId === selectedDestId).map((pkg, idx) => {
-                      const colorClass = countryColors[pkg.country] || "bg-stone-500";
                       return (
                         <div 
                           key={idx}
                           onClick={() => openTourModal(pkg)}
-                          className="bg-white border border-stone-100 rounded-sm shadow-soft hover:shadow-elegant transition-shadow duration-300 overflow-hidden cursor-pointer flex flex-col h-full group"
+                          className="bg-white border border-[#ecece8] p-1 sm:p-1.5 group cursor-pointer transition-all duration-500 flex flex-col h-full rounded-none hover:border-[#8c7a5b] destination-card"
                         >
-                          <div className="relative h-48 overflow-hidden bg-stone-50 shrink-0">
-                            <img src={pkg.img} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt={pkg.title} />
-                            <span className={`absolute bottom-2 left-2 country-badge ${colorClass} text-[8px]`}>
+                          <div className="w-full aspect-[4/3] bg-[#faf9f6]/40 mb-2 overflow-hidden relative shrink-0">
+                            <img src={pkg.img} className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-1000" alt={pkg.title} />
+                            <span className="absolute bottom-2 left-2 bg-[#faf9f6] text-brand-dark text-[8px] uppercase tracking-widest font-normal border border-[#ecece8] px-1.5 py-0.5 rounded-none">
                               {pkg.country}
                             </span>
                           </div>
-                          <div className="p-5 flex flex-col flex-grow">
-                            <h4 className="font-serif italic font-medium text-brand-dark text-base group-hover:text-brand-accent transition-colors leading-tight mb-2">
-                              {pkg.title}
-                            </h4>
-                            <p className="century-gothic text-stone-500 text-[11px] font-light leading-normal flex-grow line-clamp-4 mb-4">
-                              {pkg.desc}
-                            </p>
-                            <span className="text-[9px] text-[#8c7a5b] font-semibold tracking-widest uppercase mt-auto block pb-1 border-b border-transparent hover:border-[#8c7a5b] w-max">
-                              Discover Outing <i className="fas fa-arrow-right ml-1 text-[7px]"></i>
-                            </span>
+                          <div className="pt-1 flex flex-col flex-grow text-center sm:text-left justify-between">
+                            <div>
+                              <h4 className="font-serif italic font-medium text-brand-dark text-xs sm:text-sm group-hover:text-[#8c7a5b] transition-colors leading-tight mb-1.5">
+                                {pkg.title}
+                              </h4>
+                              <p className="century-gothic text-stone-500 text-[10px] leading-relaxed font-light line-clamp-3 mb-3">
+                                {pkg.desc}
+                              </p>
+                            </div>
+                            <div className="flex items-center justify-between pt-2 border-t border-[#ecece8] mt-auto">
+                              <span className="text-[8px] md:text-[9.5px] uppercase tracking-[0.1em] font-light text-[#8c7a5b] flex items-center">
+                                <i className="far fa-clock mr-1 text-[#8c7a5b] text-[9px]"></i> {pkg.duration || "1 Day"}
+                              </span>
+                              <span className="text-[9px] uppercase tracking-[0.1em] font-medium text-[#8c7a5b] flex items-center font-sans">
+                                Discover <i className="fas fa-chevron-right ml-1 text-[7px]"></i>
+                              </span>
+                            </div>
                           </div>
                         </div>
                       );
