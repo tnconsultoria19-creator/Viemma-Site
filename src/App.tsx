@@ -715,6 +715,93 @@ export default function App() {
               </div>
             </section>
 
+            {/* Travel Resources Section */}
+            <section className="py-16 md:py-24 bg-stone-50 relative overflow-hidden border-t border-stone-200">
+              <div className="container mx-auto px-6 md:px-12 lg:px-16 2xl:px-24 relative z-10">
+                <div className="text-center mb-12 md:mb-16">
+                  <span className="text-[#8c7a5b] text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] mb-3 md:mb-4 block">{translate("Partnerships", language)}</span>
+                  <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-light text-brand-dark mb-4 md:mb-6 italic">{translate("Travel Resources", language)}</h2>
+                  <p className="text-stone-500 text-xs md:text-sm max-w-2xl mx-auto leading-relaxed font-light tracking-wide">
+                    {translate("Essential tools and partnerships for your seamless journey across the African continent.", language)}
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+                  {/* 1. Equogrid Booking */}
+                  <a 
+                    href="https://viemmatours.equogrid.com/" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="flex flex-col items-center justify-between text-center p-8 md:p-10 bg-white border border-stone-100 hover:border-[#D4AF37]/50 shadow-sm hover:shadow-xl transition-all duration-500 group min-h-[360px]"
+                  >
+                    <div className="flex flex-col items-center">
+                      <div className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center mb-6 overflow-hidden border border-stone-100 group-hover:border-[#8c7a5b] transition-colors p-0 bg-stone-50">
+                        <img 
+                          src="https://technologymirror.com.ng/wp-content/uploads/2025/11/esim-de-olin.jpg" 
+                          alt="Equogrid eSIM" 
+                          className="w-full h-full object-cover filter group-hover:scale-110 transition-transform duration-500" 
+                        />
+                      </div>
+                      <h3 className="font-serif text-lg md:text-xl text-brand-dark mb-3 group-hover:text-[#8c7a5b] transition-colors">{translate("Equogrid eSIM", language)}</h3>
+                      <p className="text-[11px] md:text-xs text-stone-500 font-light leading-relaxed">{translate("Activate your eSIM in minutes and get online anywhere in the world. No contracts. No roaming fees. Just fast, secure data.", language)}</p>
+                    </div>
+                    <div className="mt-6 px-5 py-2.5 text-[10px] md:text-xs font-semibold uppercase tracking-widest text-white bg-brand-dark group-hover:bg-[#8c7a5b] transition-all duration-300 rounded-none inline-flex items-center gap-2 shadow-sm w-full justify-center">
+                      <span>{translate("Activate eSIM", language)}</span>
+                      <i className="fas fa-chevron-right text-[8px] group-hover:translate-x-1 transition-transform duration-300"></i>
+                    </div>
+                  </a>
+
+                  {/* 2. SARS Traveller Declaration */}
+                  <a 
+                    href="https://tools.sars.gov.za/sarsonlinequery/traveller" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="flex flex-col items-center justify-between text-center p-8 md:p-10 bg-white border border-stone-100 hover:border-[#D4AF37]/50 shadow-sm hover:shadow-xl transition-all duration-500 group min-h-[360px]"
+                  >
+                    <div className="flex flex-col items-center">
+                      <div className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center mb-6 overflow-hidden border border-stone-100 group-hover:border-[#8c7a5b] transition-colors p-0 bg-stone-50">
+                        <img 
+                          src="https://scontent-cpt1-1.xx.fbcdn.net/v/t39.30808-6/735608393_1309504657838294_8438987756375475586_n.jpg?stp=dst-jpg_tt6&cstp=mx1638x2048&ctp=s640x640&_nc_cat=104&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeFvYivYmStZb9GZ3XHP63wPpTBj37Nx_AelMGPfs3H8B5t8gacbpu5XUuCNqjT8P9Ls691qPuUoalxrA4tddAlu&_nc_ohc=bFk-5zwbx4MQ7kNvwEFgAPd&_nc_oc=AdqYGMJYjz54xxKv1Zev5JiuMwCd2skPAzLNLupQItQyWn9sG8Qs97dFDAoaGBZAIpY&_nc_zt=23&_nc_ht=scontent-cpt1-1.xx&_nc_gid=yKfrt8WkkMdlFPAocFJDqA&_nc_ss=7b2a8&oh=00_AQBC2aJzcxFfvzvqwqmYP0BoZGwKNi0RcWigZgTRo7oiwA&oe=6A637B69" 
+                          alt="SARS Logo" 
+                          className="w-full h-full object-cover filter group-hover:scale-110 transition-transform duration-500" 
+                        />
+                      </div>
+                      <h3 className="font-serif text-lg md:text-xl text-brand-dark mb-3 group-hover:text-[#8c7a5b] transition-colors">{translate("SARS Declaration", language)}</h3>
+                      <p className="text-[11px] md:text-xs text-stone-500 font-light leading-relaxed">{translate("From 1 July 2026, all travellers entering or leaving South Africa are required to complete a Traveller Declaration online before they travel.", language)}</p>
+                    </div>
+                    <div className="mt-6 px-5 py-2.5 text-[10px] md:text-xs font-semibold uppercase tracking-widest text-white bg-brand-dark group-hover:bg-[#8c7a5b] transition-all duration-300 rounded-none inline-flex items-center gap-2 shadow-sm w-full justify-center">
+                      <span>{translate("Online Declaration", language)}</span>
+                      <i className="fas fa-chevron-right text-[8px] group-hover:translate-x-1 transition-transform duration-300"></i>
+                    </div>
+                  </a>
+
+                  {/* 3. Global Rescue Safe Travel */}
+                  <a 
+                    href="https://www.globalrescue.com/" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="flex flex-col items-center justify-between text-center p-8 md:p-10 bg-white border border-stone-100 hover:border-[#D4AF37]/50 shadow-sm hover:shadow-xl transition-all duration-500 group min-h-[360px]"
+                  >
+                    <div className="flex flex-col items-center">
+                      <div className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center mb-6 border border-stone-100 bg-[#0b1f28] group-hover:bg-[#122e3b] transition-colors p-4">
+                        <img 
+                          src="https://globalrescue.com/grcom/grmkt_resources/images/GR-Logos/Global-Rescue-Logo-WR.svg" 
+                          alt="Global Rescue Logo" 
+                          className="w-full h-full object-contain filter group-hover:scale-110 transition-transform duration-500" 
+                        />
+                      </div>
+                      <h3 className="font-serif text-lg md:text-xl text-brand-dark mb-3 group-hover:text-[#8c7a5b] transition-colors">{translate("Global Rescue", language)}</h3>
+                      <p className="text-[11px] md:text-xs text-stone-500 font-light leading-relaxed">{translate("With Global Rescue, you get the peace of mind that the finest medical, security evacuation, field rescue, intelligence and telehealth personnel always have your back.", language)}</p>
+                    </div>
+                    <div className="mt-6 px-5 py-2.5 text-[10px] md:text-xs font-semibold uppercase tracking-widest text-white bg-brand-dark group-hover:bg-[#8c7a5b] transition-all duration-300 rounded-none inline-flex items-center gap-2 shadow-sm w-full justify-center">
+                      <span>{translate("Explore Global Rescue", language)}</span>
+                      <i className="fas fa-chevron-right text-[8px] group-hover:translate-x-1 transition-transform duration-300"></i>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </section>
+
             {/* Stories & Categories */}
             <section className="py-20 md:py-24 bg-transparent relative overflow-hidden border-t border-white/10">
               <div className="container mx-auto px-6 md:px-12 lg:px-16 2xl:px-24 relative z-10">
