@@ -12,7 +12,8 @@ import {
   associationImages,
   immersiveEscapesImgs,
   immersiveEscapesReels,
-  countryColors
+  countryColors,
+  sarsLogoBase64
 } from "./data";
 import { TourPackage } from "./types";
 import { translate } from "./translations";
@@ -47,6 +48,41 @@ export default function App() {
   const [bookingModalOpen, setBookingModalOpen] = useState<boolean>(false);
   const [selectedTour, setSelectedTour] = useState<TourPackage | null>(null);
   const [contactModalOpen, setContactModalOpen] = useState<boolean>(false);
+  const [sponsorshipPortalOpen, setSponsorshipPortalOpen] = useState<boolean>(false);
+
+  const openSponsorshipPortal = () => {
+    window.history.pushState({ view: "tourism-sponsorship" }, "", "#tourism-sponsorship");
+    setSponsorshipPortalOpen(true);
+  };
+
+  const closeSponsorshipPortal = () => {
+    if (window.location.hash === "#tourism-sponsorship") {
+      window.history.back();
+    } else {
+      setSponsorshipPortalOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    const handleHashOrPopState = () => {
+      if (window.location.hash === "#tourism-sponsorship") {
+        setSponsorshipPortalOpen(true);
+      } else {
+        setSponsorshipPortalOpen(false);
+      }
+    };
+
+    window.addEventListener("popstate", handleHashOrPopState);
+    window.addEventListener("hashchange", handleHashOrPopState);
+    if (window.location.hash === "#tourism-sponsorship") {
+      setSponsorshipPortalOpen(true);
+    }
+
+    return () => {
+      window.removeEventListener("popstate", handleHashOrPopState);
+      window.removeEventListener("hashchange", handleHashOrPopState);
+    };
+  }, []);
 
   // Language and Currency Preferences
   const [language, setLanguage] = useState<"en" | "pt">(() => {
@@ -313,10 +349,10 @@ export default function App() {
       <div className="fixed inset-0 z-0 w-full h-full overflow-hidden pointer-events-none">
         <img 
           src="https://images.pexels.com/photos/7243579/pexels-photo-7243579.jpeg" 
-          className="w-full h-full object-cover scale-110 blur-[8px] opacity-65" 
+          className="w-full h-full object-cover scale-100 blur-none opacity-75 contrast-105" 
           alt="Luxury Safari Backdrop Overlay" 
         />
-        <div className="absolute inset-0 bg-black/35 pointer-events-none"></div>
+        <div className="absolute inset-0 bg-black/25 pointer-events-none"></div>
       </div>
 
       {/* Top Navbar */}
@@ -535,22 +571,19 @@ export default function App() {
                     {translate("Experience breath-taking adventures across Southern Africa and the Indian Ocean. Unforgettable landscapes await your arrival.", language)}
                   </p>
                   
-                  <div className="flex flex-col sm:flex-row gap-4 items-start">
+                  <div className="flex items-start">
                     <a 
-                      href={calendarBookingLink} 
+                      href="https://viemmatours.equogrid.com/" 
                       target="_blank" 
-                      className="btn-outline px-6 py-3.5 text-[9px] md:text-[10px] font-medium uppercase tracking-[0.15em] flex items-center justify-center shadow-lg group rounded-sm"
-                      id="hero-plan-btn"
+                      rel="noopener noreferrer"
+                      className="btn-flashing px-8 py-3.5 text-[11px] md:text-xs font-semibold uppercase tracking-[0.2em] flex items-center justify-center rounded-sm text-white shadow-2xl group transition-all duration-300 relative cursor-pointer"
+                      id="hero-esim-btn"
                     >
-                      <i className="far fa-calendar-alt mr-3 text-sm text-blue-300 group-hover:text-brand-dark transition-colors"></i> {translate("Plan Your Journey", language)}
-                    </a>
-                    <a 
-                      href="https://wa.me/27681712985" 
-                      target="_blank" 
-                      className="btn-outline px-6 py-3.5 text-[9px] md:text-[10px] font-medium uppercase tracking-[0.15em] flex items-center justify-center shadow-lg group rounded-sm"
-                      id="hero-chat-btn"
-                    >
-                      <i className="fab fa-whatsapp mr-3 text-base text-[#25D366] group-hover:text-brand-dark transition-colors"></i> {translate("Connect with a Guide", language)}
+                      <span className="flex items-center gap-3">
+                        <i className="fas fa-sim-card text-brand-accent text-sm group-hover:text-brand-dark transition-colors animate-pulse"></i>
+                        <span className="font-bold tracking-widest">{translate("Get E-Sim", language)}</span>
+                        <i className="fas fa-arrow-right text-[9px] group-hover:translate-x-1 transition-transform"></i>
+                      </span>
                     </a>
                   </div>
                 </div>
@@ -567,12 +600,20 @@ export default function App() {
               </div>
             </header>
 
-            {/* Cream Ribbon Buffer */}
-            <div className="w-full bg-brand-light py-10 md:py-14 border-b border-[#ecece8] relative z-20 shadow-none">
-              <div className="container mx-auto px-6 md:px-12 lg:px-16 text-center">
-                <p className="font-serif italic text-brand-dark text-xl md:text-2xl lg:text-3xl font-light tracking-wide">
-                  "{translate("Step into a world of curated luxury and unparalleled African heritage.", language)}"
-                </p>
+            {/* Tourism Sponsorship Ribbon */}
+            <div className="w-full bg-brand-light py-8 md:py-10 border-b border-[#ecece8] relative z-20 shadow-none">
+              <div className="container mx-auto px-6 md:px-12 lg:px-16 text-center max-w-3xl flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8">
+                <h3 className="font-serif italic text-brand-dark text-xl sm:text-2xl md:text-3xl font-light tracking-wide m-0">
+                  {translate("Tourism Sponsorship program", language)}
+                </h3>
+                <button 
+                  onClick={openSponsorshipPortal}
+                  className="px-8 py-3 bg-brand-dark text-white hover:bg-[#8c7a5b] text-[11px] md:text-xs font-semibold uppercase tracking-[0.2em] transition-all duration-300 shadow-md hover:shadow-xl inline-flex items-center gap-2.5 cursor-pointer rounded-none shrink-0 group"
+                  id="ribbon-sponsorship-btn"
+                >
+                  <span>{translate("Register", language)}</span>
+                  <i className="fas fa-arrow-right text-[10px] group-hover:translate-x-1 transition-transform"></i>
+                </button>
               </div>
             </div>
 
@@ -732,10 +773,10 @@ export default function App() {
                     href="https://viemmatours.equogrid.com/" 
                     target="_blank" 
                     rel="noopener noreferrer" 
-                    className="flex flex-col items-center justify-between text-center p-8 md:p-10 bg-white border border-stone-100 hover:border-[#D4AF37]/50 shadow-sm hover:shadow-xl transition-all duration-500 group min-h-[360px]"
+                    className="flex flex-col items-center justify-between text-center p-8 md:p-10 bg-white border-[0.5px] border-stone-200/70 hover:border-[#D4AF37]/60 shadow-sm hover:shadow-xl transition-all duration-500 group min-h-[360px]"
                   >
                     <div className="flex flex-col items-center">
-                      <div className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center mb-6 overflow-hidden border border-stone-100 group-hover:border-[#8c7a5b] transition-colors p-0 bg-stone-50">
+                      <div className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center mb-6 overflow-hidden border-[0.5px] border-stone-200/60 group-hover:border-[#8c7a5b] transition-colors p-0 bg-stone-50">
                         <img 
                           src="https://technologymirror.com.ng/wp-content/uploads/2025/11/esim-de-olin.jpg" 
                           alt="Equogrid eSIM" 
@@ -756,14 +797,18 @@ export default function App() {
                     href="https://tools.sars.gov.za/sarsonlinequery/traveller" 
                     target="_blank" 
                     rel="noopener noreferrer" 
-                    className="flex flex-col items-center justify-between text-center p-8 md:p-10 bg-white border border-stone-100 hover:border-[#D4AF37]/50 shadow-sm hover:shadow-xl transition-all duration-500 group min-h-[360px]"
+                    className="flex flex-col items-center justify-between text-center p-8 md:p-10 bg-white border-[0.5px] border-stone-200/70 hover:border-[#D4AF37]/60 shadow-sm hover:shadow-xl transition-all duration-500 group min-h-[360px]"
                   >
                     <div className="flex flex-col items-center">
-                      <div className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center mb-6 overflow-hidden border border-stone-100 group-hover:border-[#8c7a5b] transition-colors p-0 bg-stone-50">
+                      <div className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center mb-6 overflow-hidden border-[0.5px] border-stone-200/60 group-hover:border-[#8c7a5b] transition-colors p-1 bg-white">
                         <img 
-                          src="https://scontent-cpt1-1.xx.fbcdn.net/v/t39.30808-6/735608393_1309504657838294_8438987756375475586_n.jpg?stp=dst-jpg_tt6&cstp=mx1638x2048&ctp=s640x640&_nc_cat=104&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeFvYivYmStZb9GZ3XHP63wPpTBj37Nx_AelMGPfs3H8B5t8gacbpu5XUuCNqjT8P9Ls691qPuUoalxrA4tddAlu&_nc_ohc=bFk-5zwbx4MQ7kNvwEFgAPd&_nc_oc=AdqYGMJYjz54xxKv1Zev5JiuMwCd2skPAzLNLupQItQyWn9sG8Qs97dFDAoaGBZAIpY&_nc_zt=23&_nc_ht=scontent-cpt1-1.xx&_nc_gid=yKfrt8WkkMdlFPAocFJDqA&_nc_ss=7b2a8&oh=00_AQBC2aJzcxFfvzvqwqmYP0BoZGwKNi0RcWigZgTRo7oiwA&oe=6A637B69" 
+                          src="https://www.rmi.org.za/wp-content/uploads/sites/12/2021/11/SARS.png" 
                           alt="SARS Logo" 
-                          className="w-full h-full object-cover filter group-hover:scale-110 transition-transform duration-500" 
+                          referrerPolicy="no-referrer"
+                          onError={(e) => {
+                            (e.currentTarget as HTMLImageElement).src = sarsLogoBase64;
+                          }}
+                          className="w-full h-full object-contain filter group-hover:scale-110 transition-transform duration-500" 
                         />
                       </div>
                       <h3 className="font-serif text-lg md:text-xl text-brand-dark mb-3 group-hover:text-[#8c7a5b] transition-colors">{translate("SARS Declaration", language)}</h3>
@@ -780,10 +825,10 @@ export default function App() {
                     href="https://www.globalrescue.com/" 
                     target="_blank" 
                     rel="noopener noreferrer" 
-                    className="flex flex-col items-center justify-between text-center p-8 md:p-10 bg-white border border-stone-100 hover:border-[#D4AF37]/50 shadow-sm hover:shadow-xl transition-all duration-500 group min-h-[360px]"
+                    className="flex flex-col items-center justify-between text-center p-8 md:p-10 bg-white border-[0.5px] border-stone-200/70 hover:border-[#D4AF37]/60 shadow-sm hover:shadow-xl transition-all duration-500 group min-h-[360px]"
                   >
                     <div className="flex flex-col items-center">
-                      <div className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center mb-6 border border-stone-100 bg-[#0b1f28] group-hover:bg-[#122e3b] transition-colors p-4">
+                      <div className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center mb-6 border-[0.5px] border-stone-200/60 bg-[#0b1f28] group-hover:bg-[#122e3b] transition-colors p-4">
                         <img 
                           src="https://globalrescue.com/grcom/grmkt_resources/images/GR-Logos/Global-Rescue-Logo-WR.svg" 
                           alt="Global Rescue Logo" 
@@ -2372,6 +2417,60 @@ export default function App() {
                 </div>
               </a>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Masked Tourism Sponsorship Portal View */}
+      {sponsorshipPortalOpen && (
+        <div 
+          className="fixed inset-0 z-[120] bg-[#FCFAF8] flex flex-col animate-fade-in" 
+          id="tourism-sponsorship-portal"
+        >
+          {/* Top Bar with Back Navigation to Original Site */}
+          <div className="h-14 bg-brand-dark text-white px-4 md:px-8 flex items-center justify-between border-b border-white/10 shrink-0 z-10 shadow-sm">
+            <button
+              onClick={closeSponsorshipPortal}
+              className="flex items-center gap-2.5 px-3 py-1.5 hover:bg-white/10 text-white transition-colors cursor-pointer text-xs uppercase tracking-widest font-semibold"
+              title="Return to Viemma Tours"
+            >
+              <i className="fas fa-arrow-left text-sm text-brand-accent"></i>
+              <span>{translate("Back to Viemma Tours", language)}</span>
+            </button>
+
+            <div className="text-center font-serif italic text-sm md:text-base text-brand-light hidden sm:block">
+              {translate("Tourism Sponsorship program", language)}
+            </div>
+
+            <div className="flex items-center gap-3">
+              <a
+                href="https://viemma-accademy.tnconsultoria19.workers.dev/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[10px] uppercase tracking-wider text-stone-300 hover:text-white flex items-center gap-1.5 px-2 py-1 hover:bg-white/5 transition-colors"
+                title="Open directly in new window"
+              >
+                <i className="fas fa-external-link-alt text-[10px]"></i>
+                <span className="hidden md:inline">{translate("Open in New Tab", language)}</span>
+              </a>
+              <button
+                onClick={closeSponsorshipPortal}
+                className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 text-stone-300 hover:text-white transition-colors cursor-pointer"
+                aria-label="Close"
+              >
+                <i className="fas fa-times text-sm"></i>
+              </button>
+            </div>
+          </div>
+
+          {/* Embedded Masked Frame */}
+          <div className="flex-1 w-full relative bg-white">
+            <iframe
+              src="https://viemma-accademy.tnconsultoria19.workers.dev/"
+              title="Tourism Sponsorship Program — Viemma Tours Academy"
+              className="w-full h-full border-0"
+              allow="camera; microphone; geolocation"
+            />
           </div>
         </div>
       )}

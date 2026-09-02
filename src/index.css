@@ -81,6 +81,36 @@ body {
     border-color: white; 
 }
 
+/* Flashing / Pulsing Luxury E-Sim Button */
+@keyframes flashGlow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.7), 0 0 15px rgba(212, 175, 55, 0.4);
+    border-color: #D4AF37;
+    background-color: rgba(26, 51, 38, 0.85);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(212, 175, 55, 0), 0 0 30px rgba(212, 175, 55, 0.9);
+    border-color: #FFFFFF;
+    background-color: rgba(212, 175, 55, 0.95);
+    color: #1A3326;
+  }
+}
+
+.btn-flashing {
+  animation: flashGlow 2s infinite cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1.5px solid #D4AF37;
+  backdrop-filter: blur(8px);
+}
+
+.btn-flashing:hover {
+  animation: none;
+  background-color: #D4AF37;
+  color: #1A3326;
+  border-color: #FFFFFF;
+  box-shadow: 0 0 25px rgba(212, 175, 55, 0.8);
+  transform: translateY(-2px);
+}
+
 .text-shadow-strong {
     text-shadow: 0px 2px 4px rgba(0,0,0,0.8), 0px 4px 20px rgba(0,0,0,0.8);
 }
@@ -123,11 +153,82 @@ body {
 }
 
 /* Cards should inherit the site font */
-.card,
-.tour-card,
-.destination-card,
-.package-card {
+.card {
   font-family: inherit;
+  border-width: 0.5px !important;
+  border-style: solid !important;
+  border-color: rgba(220, 215, 205, 0.55) !important;
+}
+
+/* Destination, Package, and Tour cards:
+   The card border does NOT surround the image. 
+   The image sits cleanly on top borderless, while the subtle card border frames the content below. */
+.destination-card,
+.package-card,
+.tour-card {
+  font-family: inherit;
+  border: none !important;
+  border-width: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Images and aspect wrappers must NOT have any border or outline */
+.destination-card .aspect-\[4\/3\],
+.package-card .aspect-\[4\/3\],
+.tour-card .aspect-\[4\/3\],
+.aspect-\[4\/3\] {
+  border: none !important;
+  border-width: 0 !important;
+  outline: none !important;
+  box-shadow: none !important;
+  margin-bottom: 0 !important;
+}
+
+.destination-card img,
+.package-card img,
+.tour-card img,
+.card img {
+  border: none !important;
+  border-width: 0 !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* The card border only borders the content/details section below the image */
+.destination-card > div:last-child,
+.package-card > div:last-child,
+.tour-card > div:last-child {
+  background: #ffffff;
+  border-width: 0.5px !important;
+  border-style: solid !important;
+  border-color: rgba(220, 215, 205, 0.55) !important;
+  border-top: none !important;
+  padding: 10px 10px 12px 10px !important;
+  transition: border-color 0.3s ease;
+}
+
+@media (min-width: 640px) {
+  .destination-card > div:last-child,
+  .package-card > div:last-child,
+  .tour-card > div:last-child {
+    padding: 12px 14px 14px 14px !important;
+  }
+}
+
+.destination-card:hover > div:last-child,
+.package-card:hover > div:last-child,
+.tour-card:hover > div:last-child {
+  border-color: #8c7a5b !important;
+}
+
+/* Badges over the picture use ultra-delicate borders */
+.package-card .absolute,
+.tour-card .absolute,
+.destination-card .absolute {
+  border-width: 0.5px !important;
+  border-color: rgba(225, 220, 210, 0.6) !important;
 }
 
 /* Mobile card layout only */
@@ -137,7 +238,7 @@ body {
   .packages-grid {
     display: grid !important;
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: 12px !important;
+    gap: 16px !important;
     width: 100% !important;
   }
 
@@ -145,7 +246,7 @@ body {
   .destinations-grid-fallback {
     display: grid !important;
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: 12px !important;
+    gap: 16px !important;
     width: 100% !important;
   }
 

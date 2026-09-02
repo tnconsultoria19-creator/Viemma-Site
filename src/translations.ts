@@ -421,7 +421,28 @@ export const ptTranslations: { [key: string]: string } = {
   "Partnerships": "Parcerias",
   "Activate eSIM": "Ativar eSIM",
   "Online Declaration": "Declaração Online",
-  "Explore Global Rescue": "Explorar Global Rescue"
+  "Explore Global Rescue": "Explorar Global Rescue",
+  "Get E-Sim": "Obter E-Sim",
+  "Register for the Tourism Sponsorship program": "Inscrever-se no Programa de Patrocínio do Turismo",
+  "Register for the Tourism Sponsorship Program": "Inscrever-se no Programa de Patrocínio do Turismo",
+  "Tourism Sponsorship Program": "Programa de Patrocínio do Turismo",
+  "Tourism Sponsorship program": "Programa de Patrocínio do Turismo",
+  "Register": "Inscrever-se",
+  "Back to Viemma Tours": "Voltar para Viemma Tours",
+  "Open in New Tab": "Abrir em nova aba",
+  "Empowering the Future of African Travel, Conservation & Community Growth": "Capacitando o Futuro do Turismo, Conservação e Desenvolvimento Comunitário Africano",
+  "Join our dedicated initiative supporting sustainable tourism training, destination conservation, and youth empowerment across Africa.": "Junte-se à nossa iniciativa dedicada ao treinamento em turismo sustentável, conservação de destinos e capacitação de jovens em toda a África.",
+  "Register Now": "Inscrever-se Agora",
+  "Tourism Sponsorship Registration": "Inscrição no Programa de Patrocínio do Turismo",
+  "Phone / WhatsApp": "Telefone / WhatsApp",
+  "Sponsorship Category": "Categoria de Patrocínio",
+  "Corporate / Business Partner": "Parceiro Corporativo / Empresarial",
+  "Individual Benefactor / Donor": "Benfeitor Individual / Doador",
+  "Student / Emerging Tourism Talent": "Estudante / Talento Emergente em Turismo",
+  "Local Community / Eco-Partner": "Comunidade Local / Parceiro Ecológico",
+  "Your Message / Goals": "Sua Mensagem / Objetivos",
+  "Submit Application": "Enviar Inscrição",
+  "Registration received! Our team will contact you shortly.": "Inscrição recebida! Nossa equipe entrará em contato em breve."
 };
 
 /**
