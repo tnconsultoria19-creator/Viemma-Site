@@ -39,7 +39,7 @@ export default function PreferredPartnerNetworkPage({ language, onClose }: Props
       "Telefone / WhatsApp": values.phone || "Não indicado",
       "Website / redes sociais": values.website || "Não indicado",
       "Serviços disponibilizados": values.services.join(", ") || "Não indicado",
-      "Registo / licenças": values.registration || "Não indicado",
+      "Cidade / município": values.registration || "Não indicado",
       "Informações adicionais": values.notes || "Não indicado",
       "Consentimento para contacto": values.consent ? "Sim" : "Não",
       "Submitted at": new Date().toLocaleString("en-ZA", { timeZone: "Africa/Johannesburg" })
@@ -83,7 +83,7 @@ export default function PreferredPartnerNetworkPage({ language, onClose }: Props
           <i className="fas fa-arrow-left" aria-hidden="true" /> {pt ? "Voltar ao site" : "Back to website"}
         </button>
         <span className="hidden font-serif text-sm italic text-[#eee6d8] sm:block">Viemma Tours · {pt ? "Rede de Parceiros" : "Partner Network"}</span>
-        <a href="mailto:info@viemmatours.africa" className="text-[10px] uppercase tracking-wider text-white/80 hover:text-white">Contact</a>
+        <a href="mailto:info@viemmatours.africa" className="text-[10px] uppercase tracking-wider text-white/80 hover:text-white">Contacto</a>
       </div>
 
       <section className="relative isolate flex min-h-[430px] items-center overflow-hidden bg-[#20372d]">
@@ -105,17 +105,100 @@ export default function PreferredPartnerNetworkPage({ language, onClose }: Props
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 py-10 md:px-12 md:py-16">
-        <div className="mb-7 max-w-2xl"><p className="mb-2 text-[10px] font-bold uppercase tracking-[.22em] text-[#8c7a5b]">Sobre a Viemma Tours</p><h2 className="font-serif text-3xl font-light leading-tight md:text-4xl">Presença internacional. Conhecimento local. Crescimento conjunto.</h2><p className="mt-4 text-sm leading-7 text-stone-600">Somos uma empresa de turismo com base na África do Sul e presença nos Estados Unidos. A nossa rede internacional pode criar novas oportunidades para Angola. O CEO, Sebastião Barros, de origem angolana, estará na BITUR em Luanda para conhecer potenciais parceiros.</p><p className="mt-3 text-xs leading-6 text-stone-500">A Viemma Tours participa em redes e organizações do sector, incluindo South African Tourism, Cape Town Tourism, Southern African Tourism Institute e SATIB.</p></div>
-        <div className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-5">
-          <article className="overflow-hidden bg-white shadow-sm"><img loading="lazy" src="https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&w=700&q=80" alt="Rede internacional de viagens" className="h-28 w-full object-cover sm:h-40"/><div className="p-3"><h3 className="font-serif text-lg">Alcance internacional</h3><p className="mt-1 text-xs leading-5 text-stone-600">Ligações a viajantes e parceiros além-fronteiras.</p></div></article>
-          <article className="overflow-hidden bg-white shadow-sm"><img loading="lazy" src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=700&q=80" alt="Oportunidades de turismo" className="h-28 w-full object-cover sm:h-40"/><div className="p-3"><h3 className="font-serif text-lg">Oportunidade</h3><p className="mt-1 text-xs leading-5 text-stone-600">Transformar referências em experiências locais.</p></div></article>
-          <article className="overflow-hidden bg-white shadow-sm"><img loading="lazy" src="https://images.unsplash.com/photo-1530789253388-582c481c54b0?auto=format&fit=crop&w=700&q=80" alt="Experiências turísticas" className="h-28 w-full object-cover sm:h-40"/><div className="p-3"><h3 className="font-serif text-lg">Quem procuramos</h3><p className="mt-1 text-xs leading-5 text-stone-600">Guias, operadores, hotéis, restaurantes e transportes.</p></div></article>
-          <article className="overflow-hidden bg-white shadow-sm"><img loading="lazy" src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=700&q=80" alt="Profissionais a colaborar" className="h-28 w-full object-cover sm:h-40"/><div className="p-3"><h3 className="font-serif text-lg">Selecção cuidada</h3><p className="mt-1 text-xs leading-5 text-stone-600">Serviço fiável, licenças aplicáveis e referências verificáveis.</p></div></article>
-        </div><div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-l-2 border-[#d8c5a0] bg-[#f1eee8] px-4 py-4"><div><p className="font-serif text-xl italic">BITUR Angola 2026</p><p className="mt-1 text-[10px] uppercase tracking-[.14em] text-stone-500">Luanda · 20–22 de Novembro de 2026</p></div><p className="text-xs text-stone-600">Registe o seu interesse e combine uma conversa na feira.</p></div>
+      <section className="mx-auto max-w-7xl px-4 py-12 md:px-12 md:py-16">
+        <div className="mx-auto mb-10 max-w-4xl text-center">
+          <p className="mb-3 text-[10px] font-bold uppercase tracking-[.22em] text-[#8c7a5b]">Uma oportunidade para negócios locais</p>
+          <h2 className="font-serif text-3xl font-light leading-tight md:text-5xl">
+            Parceria. Presença internacional. Crescimento local. Crescimento conjunto.
+          </h2>
+          <p className="mx-auto mt-5 max-w-3xl text-sm leading-7 text-stone-600 md:text-base">
+            A Viemma Tours quer conhecer empresas e profissionais de turismo em Angola. A ideia é simples: ajudar mais pessoas de fora a descobrir o que Angola tem para oferecer e criar novas oportunidades para os negócios locais.
+          </p>
+          <p className="mx-auto mt-3 max-w-3xl text-xs leading-6 text-stone-500">
+            Somos uma empresa de turismo com base na África do Sul e presença nos Estados Unidos. O CEO, Sebastião Barros, de origem angolana, estará na BITUR em Luanda para conhecer potenciais parceiros.
+          </p>
+        </div>
+
+        <div className="mb-5 flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
+          <div>
+            <p className="mb-2 text-[10px] font-bold uppercase tracking-[.22em] text-[#8c7a5b]">O que a sua empresa pode ganhar</p>
+            <h3 className="max-w-2xl font-serif text-3xl font-light leading-tight md:text-4xl">Benefícios práticos para o seu negócio</h3>
+          </div>
+          <p className="max-w-md text-sm leading-6 text-stone-600">Veja como uma parceria pode ajudar a divulgar os seus serviços, organizar reservas e chegar a novos clientes.</p>
+        </div>
+
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:gap-5">
+          <article className="border border-[#e5ded2] bg-white p-5 shadow-sm md:p-7">
+            <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-full bg-[#eee7d9] text-[#20372d]"><i className="fas fa-calendar-check text-lg" aria-hidden="true" /></div>
+            <h4 className="font-serif text-xl md:text-2xl">Sistema de reservas adaptado a si</h4>
+            <p className="mt-2 text-sm leading-6 text-stone-600">Acesso a software de reservas personalizado para as necessidades do seu negócio, para ajudar a organizar pedidos, disponibilidade e serviços — conforme as condições acordadas.</p>
+          </article>
+          <article className="border border-[#e5ded2] bg-white p-5 shadow-sm md:p-7">
+            <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-full bg-[#eee7d9] text-[#20372d]"><i className="fas fa-globe-africa text-lg" aria-hidden="true" /></div>
+            <h4 className="font-serif text-xl md:text-2xl">Mais presença internacional</h4>
+            <p className="mt-2 text-sm leading-6 text-stone-600">Apresente os seus passeios, alojamento, transporte ou experiências a uma rede que trabalha com viajantes e profissionais de turismo de outros países.</p>
+          </article>
+          <article className="border border-[#e5ded2] bg-white p-5 shadow-sm md:p-7">
+            <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-full bg-[#eee7d9] text-[#20372d]"><i className="fas fa-people-arrows text-lg" aria-hidden="true" /></div>
+            <h4 className="font-serif text-xl md:text-2xl">Possibilidade de receber referências</h4>
+            <p className="mt-2 text-sm leading-6 text-stone-600">Agências, operadores e outros fornecedores internacionais da nossa rede poderão recomendar os seus serviços quando forem adequados ao que os seus clientes procuram. As referências dependem da procura e não são garantidas.</p>
+          </article>
+          <article className="border border-[#e5ded2] bg-white p-5 shadow-sm md:p-7">
+            <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-full bg-[#eee7d9] text-[#20372d]"><i className="fas fa-chart-line text-lg" aria-hidden="true" /></div>
+            <h4 className="font-serif text-xl md:text-2xl">Novas oportunidades de negócio</h4>
+            <p className="mt-2 text-sm leading-6 text-stone-600">Explore a criação de pacotes em conjunto, colaborações com outras empresas e novas formas de chegar a pessoas que talvez ainda não conheçam o seu negócio.</p>
+          </article>
+        </div>
+
+        <div className="mt-8 grid gap-5 border-l-2 border-[#d8c5a0] bg-[#f1eee8] px-5 py-6 md:grid-cols-[1fr_auto] md:items-center md:px-7">
+          <div>
+            <p className="font-serif text-2xl italic md:text-3xl">Também queremos conhecer o que torna o seu negócio especial.</p>
+            <p className="mt-2 max-w-3xl text-sm leading-6 text-stone-600">Procuramos operadores turísticos, agências de viagens, guias, alojamentos, restaurantes, transportes, experiências locais e outros serviços relevantes para os visitantes.</p>
+          </div>
+          <a href="#partner-registration" className="inline-flex min-h-11 items-center justify-center gap-2 bg-[#20372d] px-5 py-3 text-[10px] font-bold uppercase tracking-widest text-white hover:bg-[#314d40]">Registar interesse <i className="fas fa-arrow-down" aria-hidden="true" /></a>
+        </div>
+
+        <div className="mt-10">
+          <div className="mb-5 text-center">
+            <p className="mb-2 text-[10px] font-bold uppercase tracking-[.22em] text-[#8c7a5b]">Sector do turismo</p>
+            <h3 className="font-serif text-2xl font-light md:text-3xl">Organizações e marcas de referência</h3>
+            <p className="mx-auto mt-2 max-w-2xl text-xs leading-6 text-stone-500">Conheça algumas organizações ligadas à promoção e ao apoio do turismo. Os nomes abaixo identificam as organizações e não significam, por si só, que estas patrocinam ou recomendam esta rede de parceiros.</p>
+          </div>
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+            <a href="https://www.southafrica.net/" target="_blank" rel="noreferrer" className="flex min-h-24 items-center justify-center border border-stone-200 bg-white px-5 py-5 text-center transition hover:border-[#c9b58e]">
+              <span className="block">
+                <span className="block font-serif text-2xl italic tracking-tight text-[#20372d]">South Africa</span>
+                <span className="mt-1 block text-[9px] font-bold uppercase tracking-[.22em] text-stone-600">South African Tourism</span>
+              </span>
+            </a>
+            <a href="https://www.capetown.travel/" target="_blank" rel="noreferrer" className="flex min-h-24 items-center justify-center border border-stone-200 bg-white px-5 py-5 text-center transition hover:border-[#c9b58e]">
+              <img src="https://pbs.twimg.com/profile_images/2032047193222164480/1dUnkVgZ.jpg" alt="Cape Town Tourism" loading="lazy" className="h-16 w-16 rounded-sm object-contain" />
+              <span className="ml-3 font-semibold leading-tight text-[#243d83]">Cape Town<br/>Tourism</span>
+            </a>
+            <a href="https://satib.co.za/" target="_blank" rel="noreferrer" className="flex min-h-24 items-center justify-center border border-stone-200 bg-white px-5 py-5 text-center transition hover:border-[#c9b58e]">
+              <span className="block">
+                <span className="block text-3xl font-black tracking-[.08em] text-[#ad2028]">SATIB</span>
+                <span className="mt-1 block text-[9px] font-semibold uppercase tracking-[.14em] text-stone-600">Insurance Brokers</span>
+              </span>
+            </a>
+          </div>
+        </div>
+
+        <div className="mt-8 flex flex-wrap items-center justify-between gap-3 border-t border-stone-200 pt-5">
+          <div><p className="font-serif text-xl italic">BITUR Angola 2026</p><p className="mt-1 text-[10px] uppercase tracking-[.14em] text-stone-500">Luanda · 20–22 de Novembro de 2026</p></div>
+          <p className="text-xs text-stone-600">Registe o seu interesse e combine uma conversa na feira.</p>
+        </div>
       </section>
       <section id="partner-registration" className="scroll-mt-16 bg-[#f0ede6] px-4 py-10 md:px-12 md:py-16">
-        <div className="mx-auto grid max-w-7xl gap-6 lg:grid-cols-[.72fr_1.28fr] lg:gap-12"><div className="lg:sticky lg:top-24 lg:self-start"><p className="mb-2 text-[10px] font-bold uppercase tracking-[.22em] text-[#8c7a5b]">Pré-registo de parceiros</p><h2 className="font-serif text-3xl font-light leading-tight md:text-4xl">Vamos conversar na BITUR?</h2><p className="mt-3 text-sm leading-6 text-stone-600">Escolha as opções que se aplicam a si e deixe os seus contactos. Todos os campos são opcionais.</p><p className="mt-5 text-xs leading-6 text-stone-500">info@viemmatours.africa<br/>+27 21 013 7143<br/>+27 68 171 2985</p></div>
+        <div className="mx-auto grid max-w-7xl gap-6 lg:grid-cols-[.72fr_1.28fr] lg:gap-12"><div className="lg:sticky lg:top-24 lg:self-start"><p className="mb-2 text-[10px] font-bold uppercase tracking-[.22em] text-[#8c7a5b]">Pré-registo de parceiros</p><h2 className="font-serif text-3xl font-light leading-tight md:text-4xl">Vamos conversar na BITUR?</h2><p className="mt-3 text-sm leading-6 text-stone-600">Escolha as opções que se aplicam a si e deixe os seus contactos. Todos os campos são opcionais.</p><div className="mt-6 space-y-3">
+              <p className="text-[10px] font-bold uppercase tracking-[.18em] text-[#8c7a5b]">Telefone / WhatsApp</p>
+              <a href="tel:+27210137143" className="block font-serif text-2xl tracking-tight text-[#20372d] hover:text-[#8c7a5b]">+27 21 013 7143</a>
+              <a href="https://wa.me/27681712985" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-sm font-semibold text-[#20372d] hover:text-[#8c7a5b]"><i className="fab fa-whatsapp text-lg" aria-hidden="true" /> +27 68 171 2985 · WhatsApp</a>
+              <div className="border-t border-stone-300 pt-3 text-xs leading-6 text-stone-600">
+                <p className="mb-1 text-[10px] font-bold uppercase tracking-[.18em] text-[#8c7a5b]">Contacto</p>
+                <a href="mailto:info@viemmatours.africa" className="hover:underline">info@viemmatours.africa</a>
+              </div>
+            </div></div>
           <form onSubmit={submit} className="min-w-0 bg-white p-4 shadow-sm sm:p-6 md:p-8">
             {submitted ? <div className="py-10 text-center"><h3 className="font-serif text-2xl">Interesse registado</h3><p className="mt-3 text-sm text-stone-600">Obrigado. A equipa da Viemma Tours recebeu a sua submissão.</p><button type="button" onClick={onClose} className="mt-6 bg-[#20372d] px-6 py-3 text-xs text-white">Voltar ao site</button></div> : <>
               <h3 className="mb-1 font-serif text-2xl font-light">Conte-nos sobre a sua actividade</h3><p className="mb-5 text-xs text-stone-500">Preencha apenas o que desejar. Nenhum campo é obrigatório.</p>
