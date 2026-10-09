@@ -17,6 +17,7 @@ import {
 } from "./data";
 import { TourPackage } from "./types";
 import { translate } from "./translations";
+import PreferredPartnerNetworkPage from "./components/PreferredPartnerNetworkPage";
 
 export default function App() {
   const tanzaniteScrollRef = useRef<HTMLDivElement>(null);
@@ -604,14 +605,14 @@ export default function App() {
             <div className="w-full bg-brand-light py-8 md:py-10 border-b border-[#ecece8] relative z-20 shadow-none">
               <div className="container mx-auto px-6 md:px-12 lg:px-16 text-center max-w-3xl flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8">
                 <h3 className="font-serif italic text-brand-dark text-xl sm:text-2xl md:text-3xl font-light tracking-wide m-0">
-                  {translate("Tourism Sponsorship program", language)}
+                  {language === "pt" ? "Rede de Parceiros Preferenciais" : "Preferred Partner Network"}
                 </h3>
                 <button 
                   onClick={openSponsorshipPortal}
                   className="px-8 py-3 bg-brand-dark text-white hover:bg-[#8c7a5b] text-[11px] md:text-xs font-semibold uppercase tracking-[0.2em] transition-all duration-300 shadow-md hover:shadow-xl inline-flex items-center gap-2.5 cursor-pointer rounded-none shrink-0 group"
                   id="ribbon-sponsorship-btn"
                 >
-                  <span>{translate("Register", language)}</span>
+                  <span>{language === "pt" ? "Registar interesse" : "Register interest"}</span>
                   <i className="fas fa-arrow-right text-[10px] group-hover:translate-x-1 transition-transform"></i>
                 </button>
               </div>
@@ -2421,58 +2422,9 @@ export default function App() {
         </div>
       )}
 
-      {/* Masked Tourism Sponsorship Portal View */}
+      {/* Preferred Partner Network registration — replaces the Academy embed */}
       {sponsorshipPortalOpen && (
-        <div 
-          className="fixed inset-0 z-[120] bg-[#FCFAF8] flex flex-col animate-fade-in" 
-          id="tourism-sponsorship-portal"
-        >
-          {/* Top Bar with Back Navigation to Original Site */}
-          <div className="h-14 bg-brand-dark text-white px-4 md:px-8 flex items-center justify-between border-b border-white/10 shrink-0 z-10 shadow-sm">
-            <button
-              onClick={closeSponsorshipPortal}
-              className="flex items-center gap-2.5 px-3 py-1.5 hover:bg-white/10 text-white transition-colors cursor-pointer text-xs uppercase tracking-widest font-semibold"
-              title="Return to Viemma Tours"
-            >
-              <i className="fas fa-arrow-left text-sm text-brand-accent"></i>
-              <span>{translate("Back to Viemma Tours", language)}</span>
-            </button>
-
-            <div className="text-center font-serif italic text-sm md:text-base text-brand-light hidden sm:block">
-              {translate("Tourism Sponsorship program", language)}
-            </div>
-
-            <div className="flex items-center gap-3">
-              <a
-                href="https://viemma-accademy.tnconsultoria19.workers.dev/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[10px] uppercase tracking-wider text-stone-300 hover:text-white flex items-center gap-1.5 px-2 py-1 hover:bg-white/5 transition-colors"
-                title="Open directly in new window"
-              >
-                <i className="fas fa-external-link-alt text-[10px]"></i>
-                <span className="hidden md:inline">{translate("Open in New Tab", language)}</span>
-              </a>
-              <button
-                onClick={closeSponsorshipPortal}
-                className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 text-stone-300 hover:text-white transition-colors cursor-pointer"
-                aria-label="Close"
-              >
-                <i className="fas fa-times text-sm"></i>
-              </button>
-            </div>
-          </div>
-
-          {/* Embedded Masked Frame */}
-          <div className="flex-1 w-full relative bg-white">
-            <iframe
-              src="https://viemma-accademy.tnconsultoria19.workers.dev/"
-              title="Tourism Sponsorship Program — Viemma Tours Academy"
-              className="w-full h-full border-0"
-              allow="camera; microphone; geolocation"
-            />
-          </div>
-        </div>
+        <PreferredPartnerNetworkPage language={language} onClose={closeSponsorshipPortal} />
       )}
 
     </div>
