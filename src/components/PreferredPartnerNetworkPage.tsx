@@ -120,7 +120,7 @@ export default function PreferredPartnerNetworkPage({ language, onClose }: Props
           <div className="mb-5 flex justify-center"><button type="button" onClick={() => setShowDetails(false)} className="inline-flex items-center gap-2 border border-[#20372d] px-4 py-2.5 text-[10px] font-bold uppercase tracking-[.15em] text-[#20372d] transition hover:bg-[#20372d] hover:text-white">Ocultar informação <i className="fas fa-chevron-up" aria-hidden="true" /></button></div>
           <h2 className="font-serif text-3xl font-light leading-tight md:text-4xl">Sobre a Viemma Tours</h2>
           <p className="mt-4 text-sm leading-7 text-stone-600">
-            A Viemma Tours é uma empresa de turismo sediada na África do Sul, com presença nos Estados Unidos. Pretendemos estabelecer parcerias com empresas e profissionais do sector em Angola, promovendo os seus serviços junto de viajantes e parceiros internacionais. O nosso CEO, Sebastião Barros, de origem angolana, estará presente na BITUR, em Luanda, para contactar potenciais parceiros.
+            A Viemma Tours actua no sector do turismo há 10 anos, com sede na África do Sul e presença nos Estados Unidos. Queremos estabelecer parceria com empresas e profissionais do setor de turismo em Angola. O nosso CEO, Sebastião Barros, estará na BITUR, em Luanda, para contactar potenciais parceiros.
           </p>
         </div>
 
@@ -144,37 +144,31 @@ export default function PreferredPartnerNetworkPage({ language, onClose }: Props
         </div>
 
         <div className="mx-auto mt-10 max-w-4xl">
-          <h3 className="font-serif text-2xl font-light md:text-3xl">O que esta parceria pode proporcionar</h3>
+          <h3 className="font-serif text-2xl font-light md:text-3xl">O que propomos</h3>
           <ul className="mt-4 space-y-3 text-sm leading-6 text-stone-700">
-            <li className="flex gap-3"><span className="shrink-0 text-[#8c7a5b]">✓</span><span>Possibilidade de acesso a uma solução de reservas adaptada ao seu negócio, mediante condições a acordar.</span></li>
-            <li className="flex gap-3"><span className="shrink-0 text-[#8c7a5b]">✓</span><span>Maior divulgação dos seus serviços junto de viajantes e profissionais do turismo internacional.</span></li>
-            <li className="flex gap-3"><span className="shrink-0 text-[#8c7a5b]">✓</span><span>Possibilidade de receber referências de agências e outros parceiros da rede internacional. Não há garantia de reservas.</span></li>
-            <li className="flex gap-3"><span className="shrink-0 text-[#8c7a5b]">✓</span><span>Oportunidades de colaboração com outros operadores e de criação de propostas turísticas conjuntas.</span></li>
+            <li className="flex gap-3"><span className="shrink-0 text-[#8c7a5b]">✓</span><span>Acesso a uma solução de reservas, conforme as condições acordadas.</span></li>
+            <li className="flex gap-3"><span className="shrink-0 text-[#8c7a5b]">✓</span><span>Divulgação dos seus serviços junto de clientes e parceiros internacionais.</span></li>
+            <li className="flex gap-3"><span className="shrink-0 text-[#8c7a5b]">✓</span><span>Possibilidade de receber contactos e referências da nossa rede. Não garantimos reservas.</span></li>
+            <li className="flex gap-3"><span className="shrink-0 text-[#8c7a5b]">✓</span><span>Possibilidade de criar pacotes turísticos em conjunto com outros parceiros.</span></li>
           </ul>
         </div>
 
-        <div className="mt-10">
+        <div className="mt-10 border-t border-stone-200 pt-8">
           <div className="mb-5 text-center">
-            <p className="mb-2 text-[10px] font-bold uppercase tracking-[.22em] text-[#8c7a5b]">Sector do turismo</p>
-            <h3 className="font-serif text-2xl font-light md:text-3xl">Organizações do sector do turismo</h3>
-            <p className="mx-auto mt-2 max-w-2xl text-xs leading-6 text-stone-500">Estas referências são meramente informativas e não significam que as organizações patrocinem ou recomendem a rede de parceiros.</p>
+            <h3 className="font-serif text-2xl font-light md:text-3xl">Viemma Tours</h3>
+            <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-stone-600">
+              Há 10 anos no sector do turismo, a Viemma Tours é membro da SATSA e da Cape Town Tourism. A SATIB é uma empresa especializada em seguros para o sector do turismo.
+            </p>
           </div>
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-            <a href="https://www.southafrica.net/" target="_blank" rel="noreferrer" className="flex min-h-24 items-center justify-center border border-stone-200 bg-white px-5 py-5 text-center transition hover:border-[#c9b58e]">
-              <span className="block">
-                <span className="block font-serif text-2xl italic tracking-tight text-[#20372d]">South Africa</span>
-                <span className="mt-1 block text-[9px] font-bold uppercase tracking-[.22em] text-stone-600">South African Tourism</span>
-              </span>
+          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-4">
+            <a href="https://www.satsa.co.za/membership-directory/corporate/2346161" target="_blank" rel="noreferrer" aria-label="Viemma Tours na lista de membros da SATSA" className="flex h-14 min-w-0 items-center justify-center rounded-full border border-stone-200 bg-white px-5 text-center transition hover:border-[#c9b58e] sm:h-16 sm:px-7">
+              <span className="text-sm font-black tracking-[.12em] text-[#20372d] sm:text-base">SATSA</span>
             </a>
-            <a href="https://www.capetown.travel/" target="_blank" rel="noreferrer" className="flex min-h-24 items-center justify-center border border-stone-200 bg-white px-5 py-5 text-center transition hover:border-[#c9b58e]">
-              <img src="https://pbs.twimg.com/profile_images/2032047193222164480/1dUnkVgZ.jpg" alt="Cape Town Tourism" loading="lazy" className="h-16 w-16 rounded-sm object-contain" />
-              <span className="ml-3 font-semibold leading-tight text-[#243d83]">Cape Town<br/>Tourism</span>
+            <a href="https://www.capetown.travel/listing/viemma-tours-cape-town/" target="_blank" rel="noreferrer" aria-label="Viemma Tours na Cape Town Tourism" className="flex h-14 min-w-0 items-center justify-center rounded-full border border-stone-200 bg-white px-4 text-center transition hover:border-[#c9b58e] sm:h-16 sm:px-6">
+              <span className="text-xs font-bold leading-tight text-[#243d83] sm:text-sm">CAPE TOWN<br/>TOURISM</span>
             </a>
-            <a href="https://satib.co.za/" target="_blank" rel="noreferrer" className="flex min-h-24 items-center justify-center border border-stone-200 bg-white px-5 py-5 text-center transition hover:border-[#c9b58e]">
-              <span className="block">
-                <span className="block text-3xl font-black tracking-[.08em] text-[#ad2028]">SATIB</span>
-                <span className="mt-1 block text-[9px] font-semibold uppercase tracking-[.14em] text-stone-600">Insurance Brokers</span>
-              </span>
+            <a href="https://satib.co.za/" target="_blank" rel="noreferrer" aria-label="SATIB Insurance Brokers" className="flex h-14 min-w-0 items-center justify-center rounded-full border border-stone-200 bg-white px-5 text-center transition hover:border-[#c9b58e] sm:h-16 sm:px-7">
+              <span className="text-sm font-black tracking-[.08em] text-[#ad2028] sm:text-base">SATIB</span>
             </a>
           </div>
         </div>
