@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 type Props = { language: "en" | "pt"; onClose: () => void };
 
@@ -19,6 +19,13 @@ export default function PreferredPartnerNetworkPage({ language, onClose }: Props
   const [sending, setSending] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
+  const [showDetails, setShowDetails] = useState(false);
+
+  useEffect(() => {
+    if (showDetails) {
+      document.getElementById("opportunity-details")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [showDetails]);
 
   const set = (key: keyof FormValues, value: string | boolean) =>
     setValues(current => ({ ...current, [key]: value }));
@@ -103,8 +110,8 @@ export default function PreferredPartnerNetworkPage({ language, onClose }: Props
           <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-white/90 md:text-base">
             Obrigado pelo seu interesse nesta oportunidade. Preencha o formulário abaixo para nos dar a conhecer o seu negócio.
           </p>
-          <button type="button" onClick={() => document.getElementById("opportunity-details")?.scrollIntoView({behavior:"smooth",block:"start"})} className="mt-6 inline-flex items-center gap-3 border border-[#e1cba3] bg-[#e1cba3] px-6 py-3.5 text-[10px] font-bold uppercase tracking-[.15em] text-[#20372d] transition hover:border-white hover:bg-white">
-            Saber mais sobre a oportunidade <i className="fas fa-arrow-down" aria-hidden="true" />
+          <button type="button" onClick={() => setShowDetails(current => !current)} className="mt-6 inline-flex items-center gap-3 border border-[#e1cba3] bg-[#e1cba3] px-6 py-3.5 text-[10px] font-bold uppercase tracking-[.15em] text-[#20372d] transition hover:border-white hover:bg-white">
+            {showDetails ? "Ocultar detalhes" : "Saber mais sobre a oportunidade"} <i className={"fas " + (showDetails ? "fa-arrow-up" : "fa-arrow-down")} aria-hidden="true" />
           </button>
         </div>
       </section>
@@ -136,7 +143,7 @@ export default function PreferredPartnerNetworkPage({ language, onClose }: Props
           </div>
         </div>
       </section>
-      <section id="opportunity-details" className="scroll-mt-16 mx-auto max-w-7xl px-4 py-10 md:px-12 md:py-14">
+      {showDetails && <section id="opportunity-details" className="scroll-mt-16 mx-auto max-w-7xl px-4 py-10 md:px-12 md:py-14">
         <div className="mx-auto mb-7 max-w-3xl text-center">
           <h2 className="font-serif text-3xl font-light leading-tight md:text-4xl">Sobre a Viemma Tours</h2>
           <p className="mt-4 text-sm leading-7 text-stone-600">
@@ -198,7 +205,7 @@ export default function PreferredPartnerNetworkPage({ language, onClose }: Props
             </a>
           </div>
         </div>
-      </section>
+      </section>}
       <footer className="bg-[#20372d] px-6 py-7 text-center text-[10px] uppercase tracking-[.15em] text-white/65">© {new Date().getFullYear()} Viemma Tours · {pt ? "Rede de Parceiros Preferenciais" : "Preferred Partner Network"}</footer>
     </main>
   );
