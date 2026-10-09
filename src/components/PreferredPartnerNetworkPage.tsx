@@ -38,14 +38,14 @@ export default function PreferredPartnerNetworkPage({ language, onClose }: Props
       _subject: `Viemma Tours — Pré-registo de Parceiros Preferenciais — ${values.business || "Novo contacto"}`,
       _template: "table",
       _captcha: "false",
-      "Nome de contacto": values.name || "Não indicado",
+      "Nome do responsável": values.name || "Não indicado",
       "Nome da empresa": values.business || "Não indicado",
       "Tipos de actividade": values.category.join(", ") || "Não indicado",
       "Província em Angola": values.location || "Não indicada",
       "Email": values.email || "Não indicado",
       "Telefone / WhatsApp": values.phone || "Não indicado",
       "Website / redes sociais": values.website || "Não indicado",
-      "Serviços disponibilizados": values.services.join(", ") || "Não indicado",
+      "Serviços que presta": values.services.join(", ") || "Não indicado",
       "Cidade / município": values.registration || "Não indicado",
       "Informações adicionais": values.notes || "Não indicado",
       "Consentimento para contacto": values.consent ? "Sim" : "Não",
@@ -102,52 +102,25 @@ export default function PreferredPartnerNetworkPage({ language, onClose }: Props
       </div>
 
       <section className="relative isolate flex min-h-[300px] items-center overflow-hidden bg-[#20372d] md:min-h-[360px]">
-        <img src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=2000&q=85" alt="Paisagem natural africana" className="absolute inset-0 -z-20 h-full w-full object-cover object-center" />
+        <img src="https://images.pexels.com/photos/13584138/pexels-photo-13584138.jpeg" alt="Paisagem natural africana" className="absolute inset-0 -z-20 h-full w-full object-cover object-center" />
         <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#172c23]/95 via-[#172c23]/75 to-[#172c23]/30" />
         <div className="mx-auto w-full max-w-5xl px-6 py-14 text-center md:px-12 md:py-20">
           <p className="mb-4 text-[10px] font-semibold uppercase tracking-[.28em] text-[#e1cba3]">Viemma Tours · Rede de Parceiros</p>
           <h1 className="font-serif text-4xl font-light leading-tight text-white md:text-6xl">Bem-vindo!</h1>
           <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-white/90 md:text-base">
-            Obrigado pelo seu interesse nesta oportunidade. Preencha o formulário abaixo para nos dar a conhecer o seu negócio.
+            Agradecemos o seu interesse em estabelecer uma parceria com a Viemma Tours. Pode preencher o formulário abaixo para nos apresentar a sua actividade.
           </p>
           <button type="button" onClick={() => setShowDetails(current => !current)} className="mt-6 inline-flex items-center gap-3 border border-[#e1cba3] bg-[#e1cba3] px-6 py-3.5 text-[10px] font-bold uppercase tracking-[.15em] text-[#20372d] transition hover:border-white hover:bg-white">
-            {showDetails ? "Ocultar detalhes" : "Saber mais sobre a oportunidade"} <i className={"fas " + (showDetails ? "fa-arrow-up" : "fa-arrow-down")} aria-hidden="true" />
+            {showDetails ? "Ocultar informação" : "Conhecer a oportunidade"} <i className={"fas " + (showDetails ? "fa-arrow-up" : "fa-arrow-down")} aria-hidden="true" />
           </button>
-        </div>
-      </section>
-      <section id="partner-registration" className="scroll-mt-16 bg-[#f0ede6] px-4 py-8 md:px-12 md:py-12">
-        <div className="mx-auto max-w-4xl">
-                    <form onSubmit={submit} className="mx-auto w-full max-w-4xl min-w-0 bg-white p-4 shadow-sm sm:p-6 md:p-8">
-            {submitted ? <div className="py-10 text-center"><h3 className="font-serif text-2xl">Interesse registado</h3><p className="mt-3 text-sm text-stone-600">Obrigado. A equipa da Viemma Tours recebeu a sua submissão.</p><button type="button" onClick={onClose} className="mt-6 bg-[#20372d] px-6 py-3 text-xs text-white">Voltar ao site</button></div> : <>
-              <h2 id="registration-form-heading" className="mb-1 scroll-mt-20 font-serif text-2xl font-light">Formulário de interesse</h2><p className="mb-5 text-xs text-stone-500">Preencha apenas o que desejar. Nenhum campo é obrigatório.</p>
-              <div className="grid grid-cols-2 gap-3 sm:gap-4">
-                <label className="col-span-2 sm:col-span-1"><span className="mb-1 block text-[10px] uppercase tracking-wider text-stone-600">Nome de contacto</span><input className="w-full border border-stone-300 px-3 py-3 text-sm" value={values.name} onChange={e=>set("name",e.target.value)} placeholder="Nome completo"/></label>
-                <label className="col-span-2 sm:col-span-1"><span className="mb-1 block text-[10px] uppercase tracking-wider text-stone-600">Empresa / negócio</span><input className="w-full border border-stone-300 px-3 py-3 text-sm" value={values.business} onChange={e=>set("business",e.target.value)} placeholder="Nome da empresa"/></label>
-                <fieldset className="col-span-2"><legend className="mb-2 text-[10px] uppercase tracking-wider text-stone-600">Que tipo de entidade é?</legend><div className="grid grid-cols-2 gap-2 sm:grid-cols-3">{["Operador turístico","Agência de viagens","Guia turístico","Hotel / alojamento","Restaurante","Transporte / transfers","Experiências turísticas","Aluguer de viaturas","Outro"].map(v=><button key={v} type="button" aria-pressed={values.category.includes(v)} onClick={()=>set("category",values.category.includes(v)?values.category.filter(x=>x!==v):[...values.category,v])} className={"min-h-11 border px-3 py-2 text-left text-xs "+(values.category.includes(v)?"border-[#20372d] bg-[#20372d] text-white":"border-stone-200 bg-[#fcfaf7] text-stone-700")}>{values.category.includes(v)?"✓ ":"＋ "}{v}</button>)}</div></fieldset>
-                <label className="col-span-2 sm:col-span-1"><span className="mb-1 block text-[10px] uppercase tracking-wider text-stone-600">Província de Angola</span><select className="w-full border border-stone-300 bg-white px-3 py-3 text-sm" value={values.location} onChange={e=>set("location",e.target.value)}><option value="">Seleccione se desejar</option>{["Bengo","Benguela","Bié","Cabinda","Cuando","Cubango","Cuanza Norte","Cuanza Sul","Cunene","Huambo","Huíla","Icolo e Bengo","Luanda","Lunda Norte","Lunda Sul","Malanje","Moxico","Moxico Leste","Namibe","Uíge","Zaire"].map(v=><option key={v}>{v}</option>)}</select></label>
-                <label className="col-span-2 sm:col-span-1"><span className="mb-1 block text-[10px] uppercase tracking-wider text-stone-600">Cidade / município (se aplicável)</span><input className="w-full border border-stone-300 px-3 py-3 text-sm" value={values.registration} onChange={e=>set("registration",e.target.value)} placeholder="Cidade ou município"/></label>
-                <fieldset className="col-span-2"><legend className="mb-2 text-[10px] uppercase tracking-wider text-stone-600">Serviços disponibilizados</legend><div className="grid grid-cols-2 gap-2 sm:grid-cols-3">{Array.from(new Set(values.category.flatMap(cat=>({"Operador turístico":["Circuitos e excursões","Pacotes turísticos","Experiências culturais"],"Agência de viagens":["Voos e bilhetes","Reservas e itinerários"],"Guia turístico":["Visitas guiadas","Natureza e aventura"],"Hotel / alojamento":["Quartos e alojamento","Refeições e catering"],"Restaurante":["Refeições e catering","Experiências gastronómicas"],"Transporte / transfers":["Transfers aeroporto","Transporte privado","Autocarros e grupos"],"Experiências turísticas":["Natureza e aventura","Experiências culturais","Actividades marítimas"],"Aluguer de viaturas":["Aluguer de viaturas","Transporte privado"],"Outro":["Outros serviços turísticos"]}[cat]||[])))).map(v=><button key={v} type="button" aria-pressed={values.services.includes(v)} onClick={()=>set("services",values.services.includes(v)?values.services.filter(x=>x!==v):[...values.services,v])} className={"min-h-11 border px-3 py-2 text-left text-xs "+(values.services.includes(v)?"border-[#8c7a5b] bg-[#eee7d9]":"border-stone-200 bg-white")}>{values.services.includes(v)?"✓ ":"＋ "}{v}</button>)}</div>{values.category.length===0&&<p className="mt-2 text-xs text-stone-400">Seleccione primeiro o tipo de entidade para ver serviços relevantes.</p>}</fieldset>
-                <label className="col-span-2 sm:col-span-1"><span className="mb-1 block text-[10px] uppercase tracking-wider text-stone-600">Email</span><input type="email" className="w-full border border-stone-300 px-3 py-3 text-sm" value={values.email} onChange={e=>set("email",e.target.value)} placeholder="nome@empresa.ao"/></label>
-                <label className="col-span-2 sm:col-span-1"><span className="mb-1 block text-[10px] uppercase tracking-wider text-stone-600">Telefone / WhatsApp</span><input type="tel" className="w-full border border-stone-300 px-3 py-3 text-sm" value={values.phone} onChange={e=>set("phone",e.target.value)} placeholder="+244 ..."/></label>
-                <label className="col-span-2"><span className="mb-1 block text-[10px] uppercase tracking-wider text-stone-600">Website ou redes sociais</span><input className="w-full border border-stone-300 px-3 py-3 text-sm" value={values.website} onChange={e=>set("website",e.target.value)} placeholder="Link do site ou perfil"/></label>
-                <label className="col-span-2"><span className="mb-1 block text-[10px] uppercase tracking-wider text-stone-600">Informações adicionais (se houver)</span><textarea rows={2} className="w-full border border-stone-300 px-3 py-3 text-sm" value={values.notes} onChange={e=>set("notes",e.target.value)} placeholder="Opcional"/></label>
-              </div><label className="mt-4 flex items-start gap-2 text-xs text-stone-500"><input type="checkbox" checked={values.consent} onChange={e=>set("consent",e.target.checked)}/><span>Autorizo o contacto sobre esta parceria (opcional).</span></label>{error&&<p role="alert" className="mt-4 bg-red-50 p-3 text-sm text-red-800">{error}</p>}<button type="submit" disabled={sending} className="mt-5 min-h-12 w-full bg-[#20372d] px-6 py-4 text-xs font-bold uppercase tracking-widest text-white disabled:opacity-60">{sending?"A enviar...":"Enviar pré-registo"} →</button><p className="mt-3 text-center text-[10px] text-stone-400">O pré-registo não garante aceitação. Todos os candidatos estão sujeitos a verificação.</p>
-            </>}</form>
-          <div className="mt-7 border-t border-stone-300 pt-5 text-center">
-            <p className="mb-3 text-[10px] font-bold uppercase tracking-[.18em] text-[#8c7a5b]">Contacto directo</p>
-            <div className="flex flex-col items-center justify-center gap-2 sm:flex-row sm:gap-6">
-              <a href="tel:+27210137143" className="font-serif text-xl text-[#20372d] hover:text-[#8c7a5b]">+27 21 013 7143</a>
-              <a href="https://wa.me/27681712985" target="_blank" rel="noreferrer" className="text-sm font-semibold text-[#20372d] hover:text-[#8c7a5b]">WhatsApp: +27 68 171 2985</a>
-              <a href="mailto:info@viemmatours.africa" className="text-sm text-[#20372d] hover:underline">info@viemmatours.africa</a>
-            </div>
-          </div>
         </div>
       </section>
       {showDetails && <section id="opportunity-details" className="scroll-mt-16 mx-auto max-w-7xl px-4 py-10 md:px-12 md:py-14">
         <div className="mx-auto mb-7 max-w-3xl text-center">
+          <div className="mb-5 flex justify-center"><button type="button" onClick={() => setShowDetails(false)} className="inline-flex items-center gap-2 border border-[#20372d] px-4 py-2.5 text-[10px] font-bold uppercase tracking-[.15em] text-[#20372d] transition hover:bg-[#20372d] hover:text-white">Ocultar informação <i className="fas fa-chevron-up" aria-hidden="true" /></button></div>
           <h2 className="font-serif text-3xl font-light leading-tight md:text-4xl">Sobre a Viemma Tours</h2>
           <p className="mt-4 text-sm leading-7 text-stone-600">
-            Somos uma empresa de turismo com base na África do Sul e presença nos Estados Unidos. Queremos conhecer empresas e profissionais de turismo em Angola e ajudar a dar a conhecer os seus serviços a mais viajantes. O CEO, Sebastião Barros, de origem angolana, estará na BITUR em Luanda para conhecer potenciais parceiros.
+            A Viemma Tours é uma empresa de turismo sediada na África do Sul, com presença nos Estados Unidos. Pretendemos estabelecer parcerias com empresas e profissionais do sector em Angola, promovendo os seus serviços junto de viajantes e parceiros internacionais. O nosso CEO, Sebastião Barros, de origem angolana, estará presente na BITUR, em Luanda, para contactar potenciais parceiros.
           </p>
         </div>
 
@@ -171,20 +144,20 @@ export default function PreferredPartnerNetworkPage({ language, onClose }: Props
         </div>
 
         <div className="mx-auto mt-10 max-w-4xl">
-          <h3 className="font-serif text-2xl font-light md:text-3xl">Benefícios para o seu negócio</h3>
+          <h3 className="font-serif text-2xl font-light md:text-3xl">O que esta parceria pode proporcionar</h3>
           <ul className="mt-4 space-y-3 text-sm leading-6 text-stone-700">
-            <li className="flex gap-3"><span className="shrink-0 text-[#8c7a5b]">✓</span><span>Acesso a software de reservas personalizado para o seu negócio, conforme as condições acordadas.</span></li>
-            <li className="flex gap-3"><span className="shrink-0 text-[#8c7a5b]">✓</span><span>Mais visibilidade junto de viajantes e profissionais de turismo internacionais.</span></li>
-            <li className="flex gap-3"><span className="shrink-0 text-[#8c7a5b]">✓</span><span>Possibilidade de receber referências de agências e fornecedores da nossa rede internacional. As reservas não são garantidas.</span></li>
-            <li className="flex gap-3"><span className="shrink-0 text-[#8c7a5b]">✓</span><span>Oportunidades para criar pacotes turísticos e trabalhar com outros parceiros.</span></li>
+            <li className="flex gap-3"><span className="shrink-0 text-[#8c7a5b]">✓</span><span>Possibilidade de acesso a uma solução de reservas adaptada ao seu negócio, mediante condições a acordar.</span></li>
+            <li className="flex gap-3"><span className="shrink-0 text-[#8c7a5b]">✓</span><span>Maior divulgação dos seus serviços junto de viajantes e profissionais do turismo internacional.</span></li>
+            <li className="flex gap-3"><span className="shrink-0 text-[#8c7a5b]">✓</span><span>Possibilidade de receber referências de agências e outros parceiros da rede internacional. Não há garantia de reservas.</span></li>
+            <li className="flex gap-3"><span className="shrink-0 text-[#8c7a5b]">✓</span><span>Oportunidades de colaboração com outros operadores e de criação de propostas turísticas conjuntas.</span></li>
           </ul>
         </div>
 
         <div className="mt-10">
           <div className="mb-5 text-center">
             <p className="mb-2 text-[10px] font-bold uppercase tracking-[.22em] text-[#8c7a5b]">Sector do turismo</p>
-            <h3 className="font-serif text-2xl font-light md:text-3xl">Organizações ligadas à nossa actividade</h3>
-            <p className="mx-auto mt-2 max-w-2xl text-xs leading-6 text-stone-500">A apresentação destas organizações não significa que patrocinem ou recomendem esta rede de parceiros.</p>
+            <h3 className="font-serif text-2xl font-light md:text-3xl">Organizações do sector do turismo</h3>
+            <p className="mx-auto mt-2 max-w-2xl text-xs leading-6 text-stone-500">Estas referências são meramente informativas e não significam que as organizações patrocinem ou recomendem a rede de parceiros.</p>
           </div>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
             <a href="https://www.southafrica.net/" target="_blank" rel="noreferrer" className="flex min-h-24 items-center justify-center border border-stone-200 bg-white px-5 py-5 text-center transition hover:border-[#c9b58e]">
@@ -206,6 +179,36 @@ export default function PreferredPartnerNetworkPage({ language, onClose }: Props
           </div>
         </div>
       </section>}
+
+      <section id="partner-registration" className="scroll-mt-16 bg-[#f0ede6] px-4 py-8 md:px-12 md:py-12">
+        <div className="mx-auto max-w-4xl">
+                    <form onSubmit={submit} className="mx-auto w-full max-w-4xl min-w-0 bg-white p-4 shadow-sm sm:p-6 md:p-8">
+            {submitted ? <div className="py-10 text-center"><h3 className="font-serif text-2xl">Interesse registado</h3><p className="mt-3 text-sm text-stone-600">Obrigado. A equipa da Viemma Tours recebeu a sua submissão.</p><button type="button" onClick={onClose} className="mt-6 bg-[#20372d] px-6 py-3 text-xs text-white">Voltar ao site</button></div> : <>
+              <h2 id="registration-form-heading" className="mb-1 scroll-mt-20 font-serif text-2xl font-light">Manifestação de interesse</h2><p className="mb-5 text-xs text-stone-500">Indique os seus contactos e os serviços que disponibiliza. O preenchimento dos campos é opcional.</p>
+              <div className="grid grid-cols-2 gap-3 sm:gap-4">
+                <label className="col-span-2 sm:col-span-1"><span className="mb-1 block text-[10px] uppercase tracking-wider text-stone-600">Nome de contacto</span><input className="w-full border border-stone-300 px-3 py-3 text-sm" value={values.name} onChange={e=>set("name",e.target.value)} placeholder="Nome completo"/></label>
+                <label className="col-span-2 sm:col-span-1"><span className="mb-1 block text-[10px] uppercase tracking-wider text-stone-600">Nome da empresa ou negócio</span><input className="w-full border border-stone-300 px-3 py-3 text-sm" value={values.business} onChange={e=>set("business",e.target.value)} placeholder="Nome da empresa"/></label>
+                <fieldset className="col-span-2"><legend className="mb-2 text-[10px] uppercase tracking-wider text-stone-600">Qual é a sua área de actividade?</legend><div className="grid grid-cols-2 gap-2 sm:grid-cols-3">{["Operador turístico","Agência de viagens","Guia turístico","Hotel / alojamento","Restaurante","Transporte / transfers","Experiências turísticas","Aluguer de viaturas","Outro"].map(v=><button key={v} type="button" aria-pressed={values.category.includes(v)} onClick={()=>set("category",values.category.includes(v)?values.category.filter(x=>x!==v):[...values.category,v])} className={"min-h-11 border px-3 py-2 text-left text-xs "+(values.category.includes(v)?"border-[#20372d] bg-[#20372d] text-white":"border-stone-200 bg-[#fcfaf7] text-stone-700")}>{values.category.includes(v)?"✓ ":"＋ "}{v}</button>)}</div></fieldset>
+                <label className="col-span-2 sm:col-span-1"><span className="mb-1 block text-[10px] uppercase tracking-wider text-stone-600">Província de Angola</span><select className="w-full border border-stone-300 bg-white px-3 py-3 text-sm" value={values.location} onChange={e=>set("location",e.target.value)}><option value="">Seleccione uma província</option>{["Bengo","Benguela","Bié","Cabinda","Cuando","Cubango","Cuanza Norte","Cuanza Sul","Cunene","Huambo","Huíla","Icolo e Bengo","Luanda","Lunda Norte","Lunda Sul","Malanje","Moxico","Moxico Leste","Namibe","Uíge","Zaire"].map(v=><option key={v}>{v}</option>)}</select></label>
+                <label className="col-span-2 sm:col-span-1"><span className="mb-1 block text-[10px] uppercase tracking-wider text-stone-600">Município</span><input className="w-full border border-stone-300 px-3 py-3 text-sm" value={values.registration} onChange={e=>set("registration",e.target.value)} placeholder="Cidade ou município"/></label>
+                <fieldset className="col-span-2"><legend className="mb-2 text-[10px] uppercase tracking-wider text-stone-600">Serviços disponibilizados</legend><div className="grid grid-cols-2 gap-2 sm:grid-cols-3">{Array.from(new Set(values.category.flatMap(cat=>({"Operador turístico":["Circuitos e excursões","Pacotes turísticos","Experiências culturais"],"Agência de viagens":["Voos e bilhetes","Reservas e itinerários"],"Guia turístico":["Visitas guiadas","Natureza e aventura"],"Hotel / alojamento":["Quartos e alojamento","Refeições e catering"],"Restaurante":["Refeições e catering","Experiências gastronómicas"],"Transporte / transfers":["Transfers aeroporto","Transporte privado","Autocarros e grupos"],"Experiências turísticas":["Natureza e aventura","Experiências culturais","Actividades marítimas"],"Aluguer de viaturas":["Aluguer de viaturas","Transporte privado"],"Outro":["Outros serviços turísticos"]}[cat]||[])))).map(v=><button key={v} type="button" aria-pressed={values.services.includes(v)} onClick={()=>set("services",values.services.includes(v)?values.services.filter(x=>x!==v):[...values.services,v])} className={"min-h-11 border px-3 py-2 text-left text-xs "+(values.services.includes(v)?"border-[#8c7a5b] bg-[#eee7d9]":"border-stone-200 bg-white")}>{values.services.includes(v)?"✓ ":"＋ "}{v}</button>)}</div>{values.category.length===0&&<p className="mt-2 text-xs text-stone-400">Seleccione primeiro o tipo de entidade para ver serviços relevantes.</p>}</fieldset>
+                <label className="col-span-2 sm:col-span-1"><span className="mb-1 block text-[10px] uppercase tracking-wider text-stone-600">Email</span><input type="email" className="w-full border border-stone-300 px-3 py-3 text-sm" value={values.email} onChange={e=>set("email",e.target.value)} placeholder="nome@empresa.ao"/></label>
+                <label className="col-span-2 sm:col-span-1"><span className="mb-1 block text-[10px] uppercase tracking-wider text-stone-600">Telefone / WhatsApp</span><input type="tel" className="w-full border border-stone-300 px-3 py-3 text-sm" value={values.phone} onChange={e=>set("phone",e.target.value)} placeholder="+244 ..."/></label>
+                <label className="col-span-2"><span className="mb-1 block text-[10px] uppercase tracking-wider text-stone-600">Website ou redes sociais</span><input className="w-full border border-stone-300 px-3 py-3 text-sm" value={values.website} onChange={e=>set("website",e.target.value)} placeholder="Link do site ou perfil"/></label>
+                <label className="col-span-2"><span className="mb-1 block text-[10px] uppercase tracking-wider text-stone-600">Informações adicionais</span><textarea rows={2} className="w-full border border-stone-300 px-3 py-3 text-sm" value={values.notes} onChange={e=>set("notes",e.target.value)} placeholder="Opcional"/></label>
+              </div><label className="mt-4 flex items-start gap-2 text-xs text-stone-500"><input type="checkbox" checked={values.consent} onChange={e=>set("consent",e.target.checked)}/><span>Autorizo a Viemma Tours a contactar-me a respeito desta possibilidade de parceria.</span></label>{error&&<p role="alert" className="mt-4 bg-red-50 p-3 text-sm text-red-800">{error}</p>}<button type="submit" disabled={sending} className="mt-5 min-h-12 w-full bg-[#20372d] px-6 py-4 text-xs font-bold uppercase tracking-widest text-white disabled:opacity-60">{sending?"A enviar...":"Enviar manifestação de interesse"} →</button><p className="mt-3 text-center text-[10px] text-stone-400">O envio deste formulário não garante a integração na rede. As propostas serão analisadas pela Viemma Tours.</p>
+            </>}</form>
+          <div className="mt-7 border-t border-stone-300 pt-5 text-center">
+            <p className="mb-3 text-[10px] font-bold uppercase tracking-[.18em] text-[#8c7a5b]">Contactos</p>
+            <div className="flex flex-col items-center justify-center gap-2 sm:flex-row sm:gap-6">
+              <a href="tel:+27210137143" className="text-sm font-semibold tracking-normal text-[#20372d] hover:text-[#8c7a5b]">+27 21 013 7143</a>
+              <a href="https://wa.me/27681712985" target="_blank" rel="noreferrer" className="text-sm font-semibold text-[#20372d] hover:text-[#8c7a5b]">WhatsApp: +27 68 171 2985</a>
+              <a href="mailto:info@viemmatours.africa" className="text-sm text-[#20372d] hover:underline">info@viemmatours.africa</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <footer className="bg-[#20372d] px-6 py-7 text-center text-[10px] uppercase tracking-[.15em] text-white/65">© {new Date().getFullYear()} Viemma Tours · {pt ? "Rede de Parceiros Preferenciais" : "Preferred Partner Network"}</footer>
     </main>
   );
