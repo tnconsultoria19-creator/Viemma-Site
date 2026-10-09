@@ -67,6 +67,14 @@ export default function PreferredPartnerNetworkPage({ language, onClose }: Props
     }
   };
 
+  const scrollToRegistrationForm = () => {
+    // Scroll within the partner page without changing the URL hash, which would close the overlay.
+    document.getElementById("registration-form-heading")?.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+  };
+
   const labelClass = "mb-1.5 block text-[10px] font-semibold uppercase tracking-[.15em] text-stone-600";
   const inputClass = "w-full rounded-sm border border-stone-300 bg-white px-3.5 py-3 text-sm text-stone-800 outline-none focus:border-[#8c7a5b] focus:ring-1 focus:ring-[#8c7a5b]";
 
@@ -99,9 +107,9 @@ export default function PreferredPartnerNetworkPage({ language, onClose }: Props
               ? "A Viemma Tours está a seleccionar parceiros locais de confiança para ligar Angola à nossa rede internacional de viajantes, operadores e oportunidades."
               : "Viemma Tours is selecting trusted local partners to connect Angola with our international network of travellers, operators and opportunities."}
           </p>
-          <a href="#partner-registration" className="mt-8 inline-flex items-center gap-3 border border-[#e1cba3] bg-[#e1cba3] px-6 py-3.5 text-[10px] font-bold uppercase tracking-[.17em] text-[#20372d] transition hover:border-white hover:bg-white">
+          <button type="button" onClick={scrollToRegistrationForm} className="mt-8 inline-flex items-center gap-3 border border-[#e1cba3] bg-[#e1cba3] px-6 py-3.5 text-[10px] font-bold uppercase tracking-[.17em] text-[#20372d] transition hover:border-white hover:bg-white">
             {pt ? "Registar interesse" : "Register your interest"} <i className="fas fa-arrow-down" aria-hidden="true" />
-          </a>
+          </button>
         </div>
       </section>
 
@@ -180,7 +188,7 @@ export default function PreferredPartnerNetworkPage({ language, onClose }: Props
             </div></div>
           <form onSubmit={submit} className="order-1 lg:order-2 min-w-0 bg-white p-4 shadow-sm sm:p-6 md:p-8">
             {submitted ? <div className="py-10 text-center"><h3 className="font-serif text-2xl">Interesse registado</h3><p className="mt-3 text-sm text-stone-600">Obrigado. A equipa da Viemma Tours recebeu a sua submissão.</p><button type="button" onClick={onClose} className="mt-6 bg-[#20372d] px-6 py-3 text-xs text-white">Voltar ao site</button></div> : <>
-              <h3 className="mb-1 font-serif text-2xl font-light">Conte-nos sobre a sua actividade</h3><p className="mb-5 text-xs text-stone-500">Preencha apenas o que desejar. Nenhum campo é obrigatório.</p>
+              <h3 id="registration-form-heading" className="mb-1 scroll-mt-20 font-serif text-2xl font-light">Conte-nos sobre as suas actividades</h3><p className="mb-5 text-xs text-stone-500">Preencha apenas o que desejar. Nenhum campo é obrigatório.</p>
               <div className="grid grid-cols-2 gap-3 sm:gap-4">
                 <label className="col-span-2 sm:col-span-1"><span className="mb-1 block text-[10px] uppercase tracking-wider text-stone-600">Nome de contacto</span><input className="w-full border border-stone-300 px-3 py-3 text-sm" value={values.name} onChange={e=>set("name",e.target.value)} placeholder="Nome completo"/></label>
                 <label className="col-span-2 sm:col-span-1"><span className="mb-1 block text-[10px] uppercase tracking-wider text-stone-600">Empresa / negócio</span><input className="w-full border border-stone-300 px-3 py-3 text-sm" value={values.business} onChange={e=>set("business",e.target.value)} placeholder="Nome da empresa"/></label>
