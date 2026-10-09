@@ -3,18 +3,18 @@ import React, { useState } from "react";
 type Props = { language: "en" | "pt"; onClose: () => void };
 
 type FormValues = {
-  name: string; business: string; category: string; location: string;
-  email: string; phone: string; website: string; services: string;
+  name: string; business: string; category: string[]; location: string;
+  email: string; phone: string; website: string; services: string[];
   registration: string; notes: string; consent: boolean;
 };
 
 const initialValues: FormValues = {
-  name: "", business: "", category: "", location: "", email: "",
-  phone: "", website: "", services: "", registration: "", notes: "", consent: false
+  name: "", business: "", category: [], location: "", email: "",
+  phone: "", website: "", services: [], registration: "", notes: "", consent: false
 };
 
 export default function PreferredPartnerNetworkPage({ language, onClose }: Props) {
-  const pt = language === "pt";
+  const pt = true;
   const [values, setValues] = useState<FormValues>(initialValues);
   const [sending, setSending] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -28,20 +28,20 @@ export default function PreferredPartnerNetworkPage({ language, onClose }: Props
     setSending(true);
     setError("");
     const payload = {
-      _subject: `Viemma Tours Preferred Partner Network — ${values.business}`,
+      _subject: `Viemma Tours — Pré-registo de Parceiros Preferenciais — ${values.business || "Novo contacto"}`,
       _template: "table",
       _captcha: "false",
-      "Contact name": values.name,
-      "Business name": values.business,
-      "Business category": values.category,
-      "City / province in Angola": values.location,
-      "Email": values.email,
-      "Phone / WhatsApp": values.phone,
-      "Website / social media": values.website || "Not supplied",
-      "Services and operating capacity": values.services,
-      "Registration / licences": values.registration || "Not supplied",
-      "Additional notes": values.notes || "Not supplied",
-      "Consent to be contacted": values.consent ? "Yes" : "No",
+      "Nome de contacto": values.name || "Não indicado",
+      "Nome da empresa": values.business || "Não indicado",
+      "Tipos de actividade": values.category.join(", ") || "Não indicado",
+      "Província em Angola": values.location || "Não indicada",
+      "Email": values.email || "Não indicado",
+      "Telefone / WhatsApp": values.phone || "Não indicado",
+      "Website / redes sociais": values.website || "Não indicado",
+      "Serviços disponibilizados": values.services.join(", ") || "Não indicado",
+      "Registo / licenças": values.registration || "Não indicado",
+      "Informações adicionais": values.notes || "Não indicado",
+      "Consentimento para contacto": values.consent ? "Sim" : "Não",
       "Submitted at": new Date().toLocaleString("en-ZA", { timeZone: "Africa/Johannesburg" })
     };
     try {
@@ -105,100 +105,33 @@ export default function PreferredPartnerNetworkPage({ language, onClose }: Props
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-7xl gap-12 px-6 py-14 md:grid-cols-[1.1fr_.9fr] md:px-12 md:py-20">
-        <div>
-          <p className="mb-3 text-[10px] font-bold uppercase tracking-[.22em] text-[#8c7a5b]">{pt ? "Sobre nós" : "About us"}</p>
-          <h2 className="max-w-xl font-serif text-3xl font-light leading-tight text-[#20372d] md:text-4xl">
-            {pt ? "Presença internacional. Conhecimento local. Crescimento conjunto." : "International reach. Local insight. Shared growth."}
-          </h2>
-          <p className="mt-5 max-w-2xl text-sm leading-7 text-stone-600">
-            {pt
-              ? "A Viemma Tours é uma empresa internacional de turismo com base na África do Sul e presença nos Estados Unidos. A nossa rede de parceiros cria oportunidades para encaminhar visitantes e negócios para Angola. O nosso CEO, Sebastião Barros, de origem angolana, estará na BITUR Angola 2026, em Luanda, para reunir-se com potenciais parceiros."
-              : "Viemma Tours is an international tourism company based in South Africa, with a presence in the United States. Our partner network creates opportunities to refer travellers and business into Angola. Our Angolan CEO, Sebastião Barros, will be at BITUR Angola 2026 in Luanda to meet prospective partners."}
-          </p>
-          <p className="mt-5 text-xs leading-6 text-stone-500">
-            {pt
-              ? "A Viemma Tours integra redes e organizações do sector, incluindo South African Tourism, Cape Town Tourism, Southern African Tourism Institute e SATIB."
-              : "Viemma Tours is affiliated with tourism and industry organisations including South African Tourism, Cape Town Tourism, the Southern African Tourism Institute and SATIB."}
-          </p>
-          <div className="mt-8 border-l-2 border-[#d8c5a0] pl-5">
-            <p className="font-serif text-xl italic text-[#20372d]">BITUR Angola 2026</p>
-            <p className="mt-1 text-xs uppercase tracking-[.16em] text-stone-500">{pt ? "Luanda, Angola · 20–22 de Novembro de 2026" : "Luanda, Angola · 20–22 November 2026"}</p>
-          </div>
-        </div>
-        <div className="grid content-start gap-8">
-          <div className="border-t border-stone-300 pt-5">
-            <h3 className="font-serif text-2xl font-light text-[#20372d]">{pt ? "Oportunidade de parceria" : "The partnership opportunity"}</h3>
-            <p className="mt-3 text-sm leading-6 text-stone-600">{pt
-              ? "O mercado turístico angolano está a desenvolver-se e a abrir novas oportunidades. Procuramos parceiros capazes de acolher os nossos clientes, prestar serviços de confiança e ajudar a transformar referências internacionais em experiências locais de qualidade."
-              : "Angola's tourism market is developing and opening new opportunities. We seek partners who can look after our clients, deliver reliable services and turn international referrals into high-quality local experiences."}</p>
-            {bullets(pt
-              ? ["Potenciais referências e clientes internacionais.", "Maior visibilidade junto da rede de contactos da Viemma Tours.", "Relação directa com uma empresa internacional que procura prestadores locais de confiança."]
-              : ["Potential referrals and international clients.", "Visibility within Viemma Tours' network of contacts.", "A direct relationship with an international company seeking reliable local providers."])}
-          </div>
-          <div className="border-t border-stone-300 pt-5">
-            <h3 className="font-serif text-2xl font-light text-[#20372d]">{pt ? "Quem procuramos" : "Who we welcome"}</h3>
-            {bullets(pt
-              ? ["Operadores turísticos e agências de viagens.", "Guias, hotéis, alojamentos e restaurantes.", "Empresas de transporte, transfers e experiências turísticas."]
-              : ["Tour operators and travel agencies.", "Guides, hotels, accommodation providers and restaurants.", "Transport, transfer and tourism-experience providers."])}
-          </div>
-          <div className="border-t border-stone-300 pt-5">
-            <h3 className="font-serif text-2xl font-light text-[#20372d]">{pt ? "Critérios de selecção" : "Selection criteria"}</h3>
-            {bullets(pt
-              ? ["Actividade legítima e licenças aplicáveis em dia.", "Serviço seguro, fiável e de qualidade consistente.", "Preços transparentes e comunicação profissional.", "Disponibilidade para verificação de referências e avaliação."]
-              : ["Legitimate operation and applicable licences in place.", "Safe, reliable and consistently high-quality service.", "Transparent pricing and professional communication.", "Willingness to undergo reference checks and verification."])}
-          </div>
-        </div>
+      <section className="mx-auto max-w-7xl px-4 py-10 md:px-12 md:py-16">
+        <div className="mb-7 max-w-2xl"><p className="mb-2 text-[10px] font-bold uppercase tracking-[.22em] text-[#8c7a5b]">Sobre a Viemma Tours</p><h2 className="font-serif text-3xl font-light leading-tight md:text-4xl">Presença internacional. Conhecimento local. Crescimento conjunto.</h2><p className="mt-4 text-sm leading-7 text-stone-600">Somos uma empresa de turismo com base na África do Sul e presença nos Estados Unidos. A nossa rede internacional pode criar novas oportunidades para Angola. O CEO, Sebastião Barros, de origem angolana, estará na BITUR em Luanda para conhecer potenciais parceiros.</p><p className="mt-3 text-xs leading-6 text-stone-500">A Viemma Tours participa em redes e organizações do sector, incluindo South African Tourism, Cape Town Tourism, Southern African Tourism Institute e SATIB.</p></div>
+        <div className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-5">
+          <article className="overflow-hidden bg-white shadow-sm"><img loading="lazy" src="https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&w=700&q=80" alt="Rede internacional de viagens" className="h-28 w-full object-cover sm:h-40"/><div className="p-3"><h3 className="font-serif text-lg">Alcance internacional</h3><p className="mt-1 text-xs leading-5 text-stone-600">Ligações a viajantes e parceiros além-fronteiras.</p></div></article>
+          <article className="overflow-hidden bg-white shadow-sm"><img loading="lazy" src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=700&q=80" alt="Oportunidades de turismo" className="h-28 w-full object-cover sm:h-40"/><div className="p-3"><h3 className="font-serif text-lg">Oportunidade</h3><p className="mt-1 text-xs leading-5 text-stone-600">Transformar referências em experiências locais.</p></div></article>
+          <article className="overflow-hidden bg-white shadow-sm"><img loading="lazy" src="https://images.unsplash.com/photo-1530789253388-582c481c54b0?auto=format&fit=crop&w=700&q=80" alt="Experiências turísticas" className="h-28 w-full object-cover sm:h-40"/><div className="p-3"><h3 className="font-serif text-lg">Quem procuramos</h3><p className="mt-1 text-xs leading-5 text-stone-600">Guias, operadores, hotéis, restaurantes e transportes.</p></div></article>
+          <article className="overflow-hidden bg-white shadow-sm"><img loading="lazy" src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=700&q=80" alt="Profissionais a colaborar" className="h-28 w-full object-cover sm:h-40"/><div className="p-3"><h3 className="font-serif text-lg">Selecção cuidada</h3><p className="mt-1 text-xs leading-5 text-stone-600">Serviço fiável, licenças aplicáveis e referências verificáveis.</p></div></article>
+        </div><div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-l-2 border-[#d8c5a0] bg-[#f1eee8] px-4 py-4"><div><p className="font-serif text-xl italic">BITUR Angola 2026</p><p className="mt-1 text-[10px] uppercase tracking-[.14em] text-stone-500">Luanda · 20–22 de Novembro de 2026</p></div><p className="text-xs text-stone-600">Registe o seu interesse e combine uma conversa na feira.</p></div>
       </section>
-
-      <section id="partner-registration" className="scroll-mt-16 bg-[#f0ede6] px-6 py-14 md:px-12 md:py-20">
-        <div className="mx-auto grid max-w-7xl gap-10 md:grid-cols-[.75fr_1.25fr] md:gap-16">
-          <div>
-            <p className="mb-3 text-[10px] font-bold uppercase tracking-[.22em] text-[#8c7a5b]">{pt ? "Próximo passo" : "Next step"}</p>
-            <h2 className="font-serif text-3xl font-light leading-tight text-[#20372d] md:text-4xl">{pt ? "Vamos conversar na BITUR?" : "Let's meet at BITUR."}</h2>
-            <p className="mt-4 text-sm leading-7 text-stone-600">{pt
-              ? "Preencha o formulário para manifestar o seu interesse. A nossa equipa irá analisar os dados e poderá combinar um encontro com a Viemma Tours durante a feira."
-              : "Complete the form to express your interest. Our team will review your details and can arrange a meeting with Viemma Tours during the exhibition."}</p>
-            <p className="mt-5 text-xs leading-6 text-stone-500">info@viemmatours.africa<br />+27 21 013 7143<br />+27 68 171 2985</p>
-          </div>
-          <form onSubmit={submit} className="bg-white p-5 shadow-sm md:p-8">
-            {submitted ? (
-              <div className="py-10 text-center">
-                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#e7eee8] text-[#20372d]"><i className="fas fa-check" aria-hidden="true" /></div>
-                <h3 className="mt-5 font-serif text-2xl text-[#20372d]">{pt ? "Registo recebido" : "Registration received"}</h3>
-                <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-stone-600">{pt ? "Obrigado pelo seu interesse. A equipa da Viemma Tours irá analisar os dados e entrar em contacto caso seja necessário." : "Thank you for your interest. The Viemma Tours team will review your details and follow up as appropriate."}</p>
-                <button type="button" onClick={onClose} className="mt-6 bg-[#20372d] px-6 py-3 text-[10px] font-bold uppercase tracking-[.16em] text-white hover:bg-[#8c7a5b]">{pt ? "Voltar ao site" : "Return to website"}</button>
-              </div>
-            ) : (
-              <>
-                <div className="mb-6 border-b border-stone-200 pb-4">
-                  <h3 className="font-serif text-2xl font-light text-[#20372d]">{pt ? "Registo de parceiro preferencial" : "Preferred partner registration"}</h3>
-                  <p className="mt-1 text-xs text-stone-500">{pt ? "Os campos com * são obrigatórios." : "Fields marked * are required."}</p>
-                </div>
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <label><span className={labelClass}>{pt ? "Nome completo *" : "Full name *"}</span><input required autoComplete="name" className={inputClass} value={values.name} onChange={e => set("name", e.target.value)} /></label>
-                  <label><span className={labelClass}>{pt ? "Empresa / negócio *" : "Company / business *"}</span><input required autoComplete="organization" className={inputClass} value={values.business} onChange={e => set("business", e.target.value)} /></label>
-                  <label><span className={labelClass}>{pt ? "Tipo de actividade *" : "Business type *"}</span><select required className={inputClass} value={values.category} onChange={e => set("category", e.target.value)}><option value="">{pt ? "Seleccione uma opção" : "Select an option"}</option>{(pt ? ["Operador turístico", "Guia turístico", "Agência de viagens", "Hotel / alojamento", "Restaurante", "Transporte / transfers", "Experiências turísticas", "Outro"] : ["Tour operator", "Tour guide", "Travel agency", "Hotel / accommodation", "Restaurant", "Transport / transfers", "Tourism experiences", "Other"]).map(v => <option key={v} value={v}>{v}</option>)}</select></label>
-                  <label><span className={labelClass}>{pt ? "Província / cidade *" : "Province / city *"}</span><input required className={inputClass} value={values.location} onChange={e => set("location", e.target.value)} placeholder={pt ? "Ex.: Luanda, Benguela" : "e.g. Luanda, Benguela"} /></label>
-                  <label><span className={labelClass}>Email *</span><input required type="email" autoComplete="email" className={inputClass} value={values.email} onChange={e => set("email", e.target.value)} /></label>
-                  <label><span className={labelClass}>{pt ? "Telefone / WhatsApp *" : "Phone / WhatsApp *"}</span><input required type="tel" autoComplete="tel" className={inputClass} value={values.phone} onChange={e => set("phone", e.target.value)} /></label>
-                  <label className="sm:col-span-2"><span className={labelClass}>{pt ? "Website ou redes sociais" : "Website or social profile"}</span><input type="url" className={inputClass} value={values.website} onChange={e => set("website", e.target.value)} placeholder="https://" /></label>
-                  <label className="sm:col-span-2"><span className={labelClass}>{pt ? "Serviços disponibilizados *" : "Services provided *"}</span><textarea required rows={3} className={inputClass} value={values.services} onChange={e => set("services", e.target.value)} placeholder={pt ? "Descreva brevemente os serviços e zonas de operação." : "Briefly describe your services and operating areas."} /></label>
-                  <label className="sm:col-span-2"><span className={labelClass}>{pt ? "Registo comercial / licenças aplicáveis" : "Business registration / relevant licences"}</span><input className={inputClass} value={values.registration} onChange={e => set("registration", e.target.value)} /></label>
-                  <label className="sm:col-span-2"><span className={labelClass}>{pt ? "Informações adicionais" : "Additional information"}</span><textarea rows={3} className={inputClass} value={values.notes} onChange={e => set("notes", e.target.value)} /></label>
-                </div>
-                <label className="mt-5 flex items-start gap-3 text-xs leading-5 text-stone-600"><input required type="checkbox" checked={values.consent} onChange={e => set("consent", e.target.checked)} className="mt-1 accent-[#20372d]" /><span>{pt ? "Autorizo a Viemma Tours a utilizar estes dados para avaliar o meu interesse e contactar-me sobre esta parceria." : "I consent to Viemma Tours using these details to assess my interest and contact me about this partnership."}</span></label>
-                {error && <p role="alert" className="mt-4 border border-red-200 bg-red-50 p-3 text-sm text-red-800">{error}</p>}
-                <button type="submit" disabled={sending} className="mt-6 inline-flex w-full items-center justify-center gap-3 bg-[#20372d] px-6 py-4 text-[10px] font-bold uppercase tracking-[.18em] text-white transition hover:bg-[#8c7a5b] disabled:cursor-wait disabled:opacity-60">
-                  {sending ? (pt ? "A enviar..." : "Submitting...") : (pt ? "Enviar registo de interesse" : "Submit partner registration")} <i className="fas fa-arrow-right" aria-hidden="true" />
-                </button>
-                <p className="mt-3 text-center text-[10px] leading-5 text-stone-400">{pt ? "O registo não garante aceitação como parceiro. Todos os candidatos estão sujeitos a verificação." : "Registration does not guarantee acceptance. All applicants are subject to verification."}</p>
-              </>
-            )}
-          </form>
-        </div>
-      </section>
-
+      <section id="partner-registration" className="scroll-mt-16 bg-[#f0ede6] px-4 py-10 md:px-12 md:py-16">
+        <div className="mx-auto grid max-w-7xl gap-6 lg:grid-cols-[.72fr_1.28fr] lg:gap-12"><div className="lg:sticky lg:top-24 lg:self-start"><p className="mb-2 text-[10px] font-bold uppercase tracking-[.22em] text-[#8c7a5b]">Pré-registo de parceiros</p><h2 className="font-serif text-3xl font-light leading-tight md:text-4xl">Vamos conversar na BITUR?</h2><p className="mt-3 text-sm leading-6 text-stone-600">Escolha as opções que se aplicam a si e deixe os seus contactos. Todos os campos são opcionais.</p><p className="mt-5 text-xs leading-6 text-stone-500">info@viemmatours.africa<br/>+27 21 013 7143<br/>+27 68 171 2985</p></div>
+          <form onSubmit={submit} className="min-w-0 bg-white p-4 shadow-sm sm:p-6 md:p-8">
+            {submitted ? <div className="py-10 text-center"><h3 className="font-serif text-2xl">Interesse registado</h3><p className="mt-3 text-sm text-stone-600">Obrigado. A equipa da Viemma Tours recebeu a sua submissão.</p><button type="button" onClick={onClose} className="mt-6 bg-[#20372d] px-6 py-3 text-xs text-white">Voltar ao site</button></div> : <>
+              <h3 className="mb-1 font-serif text-2xl font-light">Conte-nos sobre a sua actividade</h3><p className="mb-5 text-xs text-stone-500">Preencha apenas o que desejar. Nenhum campo é obrigatório.</p>
+              <div className="grid grid-cols-2 gap-3 sm:gap-4">
+                <label className="col-span-2 sm:col-span-1"><span className="mb-1 block text-[10px] uppercase tracking-wider text-stone-600">Nome de contacto</span><input className="w-full border border-stone-300 px-3 py-3 text-sm" value={values.name} onChange={e=>set("name",e.target.value)} placeholder="Nome completo"/></label>
+                <label className="col-span-2 sm:col-span-1"><span className="mb-1 block text-[10px] uppercase tracking-wider text-stone-600">Empresa / negócio</span><input className="w-full border border-stone-300 px-3 py-3 text-sm" value={values.business} onChange={e=>set("business",e.target.value)} placeholder="Nome da empresa"/></label>
+                <fieldset className="col-span-2"><legend className="mb-2 text-[10px] uppercase tracking-wider text-stone-600">Que tipo de entidade é?</legend><div className="grid grid-cols-2 gap-2 sm:grid-cols-3">{["Operador turístico","Agência de viagens","Guia turístico","Hotel / alojamento","Restaurante","Transporte / transfers","Experiências turísticas","Aluguer de viaturas","Outro"].map(v=><button key={v} type="button" aria-pressed={values.category.includes(v)} onClick={()=>set("category",values.category.includes(v)?values.category.filter(x=>x!==v):[...values.category,v])} className={"min-h-11 border px-3 py-2 text-left text-xs "+(values.category.includes(v)?"border-[#20372d] bg-[#20372d] text-white":"border-stone-200 bg-[#fcfaf7] text-stone-700")}>{values.category.includes(v)?"✓ ":"＋ "}{v}</button>)}</div></fieldset>
+                <label className="col-span-2 sm:col-span-1"><span className="mb-1 block text-[10px] uppercase tracking-wider text-stone-600">Província de Angola</span><select className="w-full border border-stone-300 bg-white px-3 py-3 text-sm" value={values.location} onChange={e=>set("location",e.target.value)}><option value="">Seleccione se desejar</option>{["Bengo","Benguela","Bié","Cabinda","Cuando","Cubango","Cuanza Norte","Cuanza Sul","Cunene","Huambo","Huíla","Icolo e Bengo","Luanda","Lunda Norte","Lunda Sul","Malanje","Moxico","Moxico Leste","Namibe","Uíge","Zaire"].map(v=><option key={v}>{v}</option>)}</select></label>
+                <label className="col-span-2 sm:col-span-1"><span className="mb-1 block text-[10px] uppercase tracking-wider text-stone-600">Cidade / município (se aplicável)</span><input className="w-full border border-stone-300 px-3 py-3 text-sm" value={values.registration} onChange={e=>set("registration",e.target.value)} placeholder="Cidade ou município"/></label>
+                <fieldset className="col-span-2"><legend className="mb-2 text-[10px] uppercase tracking-wider text-stone-600">Serviços disponibilizados</legend><div className="grid grid-cols-2 gap-2 sm:grid-cols-3">{Array.from(new Set(values.category.flatMap(cat=>({"Operador turístico":["Circuitos e excursões","Pacotes turísticos","Experiências culturais"],"Agência de viagens":["Voos e bilhetes","Reservas e itinerários"],"Guia turístico":["Visitas guiadas","Natureza e aventura"],"Hotel / alojamento":["Quartos e alojamento","Refeições e catering"],"Restaurante":["Refeições e catering","Experiências gastronómicas"],"Transporte / transfers":["Transfers aeroporto","Transporte privado","Autocarros e grupos"],"Experiências turísticas":["Natureza e aventura","Experiências culturais","Actividades marítimas"],"Aluguer de viaturas":["Aluguer de viaturas","Transporte privado"],"Outro":["Outros serviços turísticos"]}[cat]||[])))).map(v=><button key={v} type="button" aria-pressed={values.services.includes(v)} onClick={()=>set("services",values.services.includes(v)?values.services.filter(x=>x!==v):[...values.services,v])} className={"min-h-11 border px-3 py-2 text-left text-xs "+(values.services.includes(v)?"border-[#8c7a5b] bg-[#eee7d9]":"border-stone-200 bg-white")}>{values.services.includes(v)?"✓ ":"＋ "}{v}</button>)}</div>{values.category.length===0&&<p className="mt-2 text-xs text-stone-400">Seleccione primeiro o tipo de entidade para ver serviços relevantes.</p>}</fieldset>
+                <label className="col-span-2 sm:col-span-1"><span className="mb-1 block text-[10px] uppercase tracking-wider text-stone-600">Email</span><input type="email" className="w-full border border-stone-300 px-3 py-3 text-sm" value={values.email} onChange={e=>set("email",e.target.value)} placeholder="nome@empresa.ao"/></label>
+                <label className="col-span-2 sm:col-span-1"><span className="mb-1 block text-[10px] uppercase tracking-wider text-stone-600">Telefone / WhatsApp</span><input type="tel" className="w-full border border-stone-300 px-3 py-3 text-sm" value={values.phone} onChange={e=>set("phone",e.target.value)} placeholder="+244 ..."/></label>
+                <label className="col-span-2"><span className="mb-1 block text-[10px] uppercase tracking-wider text-stone-600">Website ou redes sociais</span><input className="w-full border border-stone-300 px-3 py-3 text-sm" value={values.website} onChange={e=>set("website",e.target.value)} placeholder="Link do site ou perfil"/></label>
+                <label className="col-span-2"><span className="mb-1 block text-[10px] uppercase tracking-wider text-stone-600">Informações adicionais (se houver)</span><textarea rows={2} className="w-full border border-stone-300 px-3 py-3 text-sm" value={values.notes} onChange={e=>set("notes",e.target.value)} placeholder="Opcional"/></label>
+              </div><label className="mt-4 flex items-start gap-2 text-xs text-stone-500"><input type="checkbox" checked={values.consent} onChange={e=>set("consent",e.target.checked)}/><span>Autorizo o contacto sobre esta parceria (opcional).</span></label>{error&&<p role="alert" className="mt-4 bg-red-50 p-3 text-sm text-red-800">{error}</p>}<button type="submit" disabled={sending} className="mt-5 min-h-12 w-full bg-[#20372d] px-6 py-4 text-xs font-bold uppercase tracking-widest text-white disabled:opacity-60">{sending?"A enviar...":"Enviar pré-registo"} →</button><p className="mt-3 text-center text-[10px] text-stone-400">O pré-registo não garante aceitação. Todos os candidatos estão sujeitos a verificação.</p>
+            </>}</form></div></section>
       <footer className="bg-[#20372d] px-6 py-7 text-center text-[10px] uppercase tracking-[.15em] text-white/65">© {new Date().getFullYear()} Viemma Tours · {pt ? "Rede de Parceiros Preferenciais" : "Preferred Partner Network"}</footer>
     </main>
   );
